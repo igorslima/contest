@@ -229,6 +229,7 @@ public class AutorController {
 			if (eventoService.existeEvento(idEvento)) {
 				List<Trilha> trilhas = trilhaService.buscarTrilhas(Long.parseLong(id));
 				Trabalho trabalho = new Trabalho();
+				
 
 				model.addAttribute("trabalho", trabalho);
 				model.addAttribute("eventoId", id);
@@ -251,6 +252,7 @@ public class AutorController {
 		Evento evento;
 		Trilha trilha;
 		Submissao submissao;
+		Pessoa autorLogado = PessoaLogadaUtil.pessoaLogada();
 		try {
 			String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
 			+ request.getContextPath();
@@ -259,6 +261,20 @@ public class AutorController {
 
 			evento = eventoService.buscarEventoPorId(idEvento);
 			trilha = trilhaService.get(idTrilha, idEvento);
+			
+			List<Pessoa> autoresNoEvento = pessoaService.getAutoresEvento(evento.getId());
+			
+			
+			if (evento.getEstado() == EstadoEvento.ATIVO && !autoresNoEvento.contains(autorLogado)) {
+				
+				ParticipacaoEvento participacaoEvento = new ParticipacaoEvento();
+				participacaoEvento.setEvento(evento);
+				participacaoEvento.setPessoa(autorLogado);
+				participacaoEvento.setPapel(Tipo.AUTOR);
+				participacaoEventoService.adicionarOuEditarParticipacaoEvento(participacaoEvento);
+			}
+			
+			
 			if (evento == null || trilha == null) {
 				redirect.addFlashAttribute("erroAoCadastrar", messageService.getMessage(ERRO_CADASTRO_TRABALHO));
 				return "redirect:/autor/meusTrabalhos";
