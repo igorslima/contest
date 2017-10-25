@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,6 +30,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.ufc.quixada.npi.ldap.model.Usuario;
 import br.ufc.quixada.npi.ldap.service.UsuarioService;
+import cucumber.api.java.it.Data;
 import ufc.quixada.npi.contest.model.EstadoEvento;
 import ufc.quixada.npi.contest.model.Evento;
 import ufc.quixada.npi.contest.model.Papel.Tipo;
@@ -387,16 +391,23 @@ public class AutorController {
 
 	@PreAuthorize("isAutorInEvento(#id)")
 	@RequestMapping(value = "/listarTrabalhos/{id}", method = RequestMethod.GET)
-	public String listarTrabalhos(@PathVariable String id, Model model, RedirectAttributes redirect) {
+	public String listarTrabalhos(@PathVariable String id, Model model, RedirectAttributes redirect) throws ParseException {
 		try {
 			Long idEvento = Long.parseLong(id);
 			if (eventoService.existeEvento(idEvento)) {
+				
+				
+						
+				Date data = new Date(System.currentTimeMillis());  
+				SimpleDateFormat formatarDate = new SimpleDateFormat("yyyy-MM-dd"); 				
+				
 				Evento evento = eventoService.buscarEventoPorId(Long.parseLong(id));
 				Pessoa pessoa = PessoaLogadaUtil.pessoaLogada();
 
 				List<Trabalho> listaTrabalho = trabalhoService.getTrabalhosDoAutorNoEvento(pessoa, evento);
 				model.addAttribute("evento", evento);
 				model.addAttribute("listaTrabalhos", listaTrabalho);
+				model.addAttribute("dataAtual", formatarDate.format(data));
 
 				return Constants.TEMPLATE_LISTAR_TRABALHO_AUTOR;
 			}

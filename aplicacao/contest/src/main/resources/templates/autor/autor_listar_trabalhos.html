@@ -63,8 +63,9 @@
                 	<p><b>Trilha: </b><span th:text="${trabalho.trilha.nome}"></span></p>
                 	<p><b>SITUAÇÃO DO ARTIGO: </b> 
                 	
-                	<span th:if="${not #lists.isEmpty(trabalho.revisoes)}">Revisado</span>
-                	<span th:if="${#lists.isEmpty(trabalho.revisoes)}">Não Revisado</span>
+                	
+                	<span th:if="${dataAtual} > ${trabalho.evento.getPrazoRevisaoFinal()}" th:text="${trabalho.status}"></span>
+                	<span th:if="${#lists.isEmpty(trabalho.revisoes)}">Não Revisado</span> 
                 	</p>
                
                 </div>
