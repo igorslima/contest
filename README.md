@@ -5,3 +5,4 @@
 Nascido para substituir o antigo sistema que era utilizado na organização dos encontros universitários do campus da UFC em Quixadá. O CONTEST, é um sistema de eventos de submissão. Permite a criação de eventos públicos e privados, com período de submissão, revisão e envio de versão final. 
 
 Trabalho pra disciplina de Qualidade
+
