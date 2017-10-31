@@ -21,9 +21,9 @@ aplicacao/contest/.springBeans
 aplicacao/contest/.mvn
 aplicacao/contest/mvnw*
 
-application.properties
-aplicacao/contest/src/main/resources/application-homologacao.properties
-aplicacao/contest/src/main/resources/application-producao.properties
+# application.properties
+# aplicacao/contest/src/main/resources/application-homologacao.properties
+# aplicacao/contest/src/main/resources/application-producao.properties
 
 *.bak
 *.log
