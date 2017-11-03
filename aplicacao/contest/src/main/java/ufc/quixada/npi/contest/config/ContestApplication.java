@@ -20,15 +20,14 @@ import ufc.quixada.npi.contest.service.StorageService;
 @EnableJpaRepositories("ufc.quixada.npi.contest.repository")
 @EnableConfigurationProperties(StorageProperties.class)
 public class ContestApplication extends SpringBootServletInitializer {
-	private static Class<ContestApplication> applicationClass = ContestApplication.class;
 
 	public static void main(String[] args) {
-		SpringApplication.run(applicationClass, args);
+		SpringApplication.run(ContestApplication.class, args);
 	}
 
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		return application.sources(applicationClass);
+		return application.sources(ContestApplication.class);
 	}
 	
 	@Bean
