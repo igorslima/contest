@@ -35,6 +35,8 @@ import ufc.quixada.npi.contest.util.PessoaLogadaUtil;
 @Controller
 public class LoginController {
 	
+	// GOD CLASS
+	// TODO refatorar método dashboard
 	@Autowired
 	PessoaService pessoaService;
 	
@@ -120,7 +122,7 @@ public class LoginController {
 		
 		return Constants.REDIRECIONAR_PARA_LOGIN;
 	}
-	
+
 	@RequestMapping(value = "/dashboard")
 	public String dashboard(Model model){
 		Long idPessoaLogada = PessoaLogadaUtil.pessoaLogada().getId();

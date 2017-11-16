@@ -16,6 +16,8 @@ import ufc.quixada.npi.contest.util.Constants;
 
 @Service
 public class EnviarEmailService {
+	
+	// Diz que é GOD CLASS mas não é
 	@Autowired
 	private SendEmailService service;
 	

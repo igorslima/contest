@@ -23,6 +23,11 @@ import ufc.quixada.npi.contest.util.ContestUtil;
 @Service
 public class EventoService {
 
+	// GOD CLASS
+	// TODO refatorar método adicionarPessoa
+	// TODO refatorar método adicionarOuAtualizarEvento
+	// TODO Colocar as Strings staticas em outra classe
+
 	private static final String TITULO_EMAIL_ORGANIZADOR = "TITULO_EMAIL_CONVITE_ORGANIZADOR";
 	private static final String TEXTO_EMAIL_ORGANIZADOR = "TEXTO_EMAIL_CONVITE_ORGANIZADOR";
 	private static final String ASSUNTO_EMAIL_CONFIRMACAO = "ASSUNTO_EMAIL_CONFIRMACAO";

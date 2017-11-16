@@ -64,7 +64,13 @@ import ufc.quixada.npi.contest.util.PessoaLogadaUtil;
 @Controller
 @RequestMapping("/eventoOrganizador")
 public class EventoControllerOrganizador extends EventoGenericoController {
-
+	// GOD CLASS
+	// TODO Colocar as Strings staticas em outra classe
+	
+	// TODO Refatorar método detalhesEvento
+	// TODO Refatorar método gerenciarRevisor
+	// TODO Refatorar método convidarPorEmail
+	
 	private static final String ORGANIZADOR_ERROR = "organizadorError";
 	private static final String ERRO_ENVIO_EMAIL = "ERRO_ENVIO_EMAIL";
 	private static final String EVENTOS_QUE_ORGANIZO = "eventosQueOrganizo";
@@ -116,7 +122,7 @@ public class EventoControllerOrganizador extends EventoGenericoController {
 	public List<Pessoa> listaPossiveisOrganizadores() {
 		return pessoaService.getPossiveisOrganizadores();
 	}
-
+	
 	@PreAuthorize("isOrganizadorInEvento(#id)")
 	@RequestMapping(value = "/evento/{id}", method = RequestMethod.GET)
 	public String detalhesEvento(@PathVariable String id, Model model) {
@@ -454,6 +460,7 @@ public class EventoControllerOrganizador extends EventoGenericoController {
 		}
 	}
 
+	
 	@RequestMapping(value = "/convidar", method = RequestMethod.POST)
 	public String convidarPorEmail(@RequestParam("email") String email, @RequestParam("funcao") String funcao,
 			@RequestParam("eventoId") Long eventoId, Model model, RedirectAttributes redirect,

@@ -13,6 +13,8 @@ import ufc.quixada.npi.contest.repository.TrilhaRepository;
 @Service
 public class TrilhaService {
 	
+	// GOD CLASS?
+	
 	@Autowired
 	private TrilhaRepository trilhaRepository;
 	

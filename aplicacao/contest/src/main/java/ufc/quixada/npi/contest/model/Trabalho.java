@@ -23,6 +23,9 @@ import ufc.quixada.npi.contest.model.Papel.Tipo;
 @Table(name = "trabalho")
 public class Trabalho implements Comparable<Trabalho> {
 
+	
+	// GOD CLASS
+	// NÃO ACHEI ALGO DE MUITO GRANDE PRA SER REFATORADO
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
@@ -225,7 +228,8 @@ public class Trabalho implements Comparable<Trabalho> {
 	public boolean isIndicadoMelhoresTrabalhos(){
 		if(this.isRevisado()){
 			for(Revisao revisao : revisoes){
-				if(revisao.getConteudo().contains("indicacao")) return true;
+				if(revisao.getConteudo().contains("indicacao"))
+					return true;
 			}
 		}
 		

@@ -28,6 +28,10 @@ import ufc.quixada.npi.contest.util.PessoaLogadaUtil;
 @Controller
 @RequestMapping(value = "/secao")
 public class SecaoController {
+	// GOD CLASS
+	
+	// TODO refatorar método secaoTrabalhos
+
 	@Autowired
 	private SecaoService secaoService;
 	@Autowired
@@ -91,7 +95,6 @@ public class SecaoController {
 				trabalhos.add(trabalho);
 			}
 		}
-
 		
 		Collections.sort(trabalhos);
 		

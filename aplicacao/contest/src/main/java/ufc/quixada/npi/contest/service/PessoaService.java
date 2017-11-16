@@ -17,6 +17,7 @@ import ufc.quixada.npi.contest.repository.PessoaRepository;
 @Service
 public class PessoaService {
 
+	// segundo o JDeodorant é GOD CLASS, mas não é
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
@@ -39,7 +40,6 @@ public class PessoaService {
 			pessoaRepository.delete(id);
 			return true;
 		}
-
 		return false;
 	}
 

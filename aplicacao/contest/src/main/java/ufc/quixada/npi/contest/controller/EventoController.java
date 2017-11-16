@@ -35,6 +35,10 @@ import ufc.quixada.npi.contest.util.Constants;
 @RequestMapping("/evento")
 public class EventoController extends EventoGenericoController {
 
+	// GOD CLASS
+	// TODO Colocar as Strings staticas em outra classe
+	// TODO refatorar método adicionarEvento
+	
 	private static final String EVENTO_INATIVO_EXCLUIDO_ERRO = "EVENTO_INATIVO_EXCLUIDO_ERRO";
 	private static final String ERRO_EXCLUIR = "erroExcluir";
 	private static final String EVENTO_INATIVO_EXCLUIDO_SUCESSO = "EVENTO_INATIVO_EXCLUIDO_SUCESSO";
@@ -90,6 +94,7 @@ public class EventoController extends EventoGenericoController {
 		
 		return Constants.TEMPLATE_ADICIONAR_OU_EDITAR_EVENTO_ADMIN;
 	}
+
 
 	@RequestMapping(value = "/adicionarEvento", method = RequestMethod.POST)
 	public String adicionarEvento(@ModelAttribute("organizador") Pessoa organizador, @Valid Evento evento,
