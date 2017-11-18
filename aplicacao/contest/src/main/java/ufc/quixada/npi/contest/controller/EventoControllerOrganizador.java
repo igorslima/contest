@@ -64,7 +64,7 @@ import ufc.quixada.npi.contest.util.PessoaLogadaUtil;
 @Controller
 @RequestMapping("/eventoOrganizador")
 public class EventoControllerOrganizador extends EventoGenericoController {
-	// GOD CLASS
+	// GOD CLASS 
 	// TODO Colocar as Strings staticas em outra classe
 	
 	// TODO Refatorar método detalhesEvento
