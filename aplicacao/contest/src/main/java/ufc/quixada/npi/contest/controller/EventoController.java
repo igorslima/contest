@@ -83,6 +83,7 @@ public class EventoController extends EventoGenericoController {
 		return Constants.TEMPLATE_LISTAR_EVENTOS_INATIVOS_ADMIN;
 	}
 
+	//Método para adicionar um evento usando o Get
 	@RequestMapping(value = "/adicionar", method = RequestMethod.GET)
 	public String adicionarEvento(Model model) {
 		Pessoa organizador = new Pessoa();
@@ -94,6 +95,7 @@ public class EventoController extends EventoGenericoController {
 	}
 
 
+	//Método para adicionar um evento usando o Post
 	@RequestMapping(value = "/adicionarEvento", method = RequestMethod.POST)
 	public String adicionarEvento(@ModelAttribute("organizador") Pessoa organizador, @Valid Evento evento,
 			BindingResult result, RedirectAttributes redirect, HttpServletRequest request ) {
