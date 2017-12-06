@@ -455,7 +455,7 @@ public class AutorController {
 		}
 	}
 
-	// método para excluit um trabalho com id igual ao de trabalhoId
+	// método para excluir um trabalho com id igual ao de trabalhoId
 	@RequestMapping(value = "/excluirTrabalho/", method = RequestMethod.POST)
 	public String excluirTrabalho(@RequestParam("trabalhoId") String trabalhoId,
 			@RequestParam("eventoId") String eventoId, Model model, RedirectAttributes redirect) {
