@@ -151,31 +151,49 @@ public class Trabalho implements Comparable<Trabalho> {
 	}
 	
 	public void setAutores(Pessoa autor, List<Pessoa> coautores){
+		ParticipacaoTrabalho participacaoAutor = participacaoAutor(autor);
+		participacoes = new ArrayList<ParticipacaoTrabalho>();
+		participacoes(coautores, participacaoAutor);
+	}
+
+	private ParticipacaoTrabalho participacaoAutor(Pessoa autor) {
 		ParticipacaoTrabalho participacaoAutor = new ParticipacaoTrabalho();
 		participacaoAutor.setPapel(Tipo.AUTOR);
 		participacaoAutor.setTrabalho(this);
 		participacaoAutor.setPessoa(autor);
-		
-		participacoes = new ArrayList<ParticipacaoTrabalho>();
+		return participacaoAutor;
+	}
+
+	private void participacoes(List<Pessoa> coautores, ParticipacaoTrabalho participacaoAutor) {
 		for (Pessoa pessoa : coautores) {
-			ParticipacaoTrabalho participacaoCoautor = new ParticipacaoTrabalho();
-			participacaoCoautor.setPapel(Tipo.COAUTOR);
-			participacaoCoautor.setTrabalho(this);
-			participacaoCoautor.setPessoa(pessoa);
+			ParticipacaoTrabalho participacaoCoautor = participacaoCoautor(pessoa);
 			participacoes.add(participacaoCoautor);
 		}
 		participacoes.add(participacaoAutor);
+	}
+
+	private ParticipacaoTrabalho participacaoCoautor(Pessoa pessoa) {
+		ParticipacaoTrabalho participacaoCoautor = new ParticipacaoTrabalho();
+		participacaoCoautor.setPapel(Tipo.COAUTOR);
+		participacaoCoautor.setTrabalho(this);
+		participacaoCoautor.setPessoa(pessoa);
+		return participacaoCoautor;
 	}
 	
 	public void setCoautores(List<Pessoa> coautores) {
 		
 		for (Pessoa pessoa : coautores) {
-			ParticipacaoTrabalho participacaoCoautor = new ParticipacaoTrabalho();
-			participacaoCoautor.setPapel(Tipo.COAUTOR);
-			participacaoCoautor.setTrabalho(this);
-			participacaoCoautor.setPessoa(pessoa);
+			ParticipacaoTrabalho participacaoCoautor = participacao_Coautor(pessoa);
 			participacoes.add(participacaoCoautor);
 		}
+	}
+
+	private ParticipacaoTrabalho participacao_Coautor(Pessoa pessoa) {
+		ParticipacaoTrabalho participacaoCoautor = new ParticipacaoTrabalho();
+		participacaoCoautor.setPapel(Tipo.COAUTOR);
+		participacaoCoautor.setTrabalho(this);
+		participacaoCoautor.setPessoa(pessoa);
+		return participacaoCoautor;
 	}
 	
 	public List<Pessoa> getParticipacaoPapelTrabalho(Tipo... papeis) {

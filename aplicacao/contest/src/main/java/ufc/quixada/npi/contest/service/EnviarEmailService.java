@@ -47,14 +47,18 @@ public class EnviarEmailService {
 	}
 	public String  resetarSenhaEmail(@PathVariable("token") Token token, @RequestParam String senha, @RequestParam String senhaConfirma, RedirectAttributes redirectAttributes){
 		if(senha.equals(senhaConfirma)){
-			Pessoa pessoa = token.getPessoa();
-			String password =  pessoaService.encodePassword(senha);
-			pessoa.setPassword(password);
+			Pessoa pessoa = pessoa(token, senha);
 			pessoaService.addOrUpdate(pessoa);
 			tokenService.deletar(token);
 			redirectAttributes.addFlashAttribute("senhaRedefinida", true);
 		} 	
 		return "";
+	}
+	private Pessoa pessoa(Token token, String senha) {
+		Pessoa pessoa = token.getPessoa();
+		String password = pessoaService.encodePassword(senha);
+		pessoa.setPassword(password);
+		return pessoa;
 	}
 	public String esqueciSenhaEmail(@RequestParam String email, RedirectAttributes redirectAttributes,String url) {
 		Pessoa pessoa = pessoaService.getByEmail(email);

@@ -89,14 +89,7 @@ public class RevisorController {
 	@RequestMapping(value = "/{idEvento}/trabalhosRevisao")
 	public String trabalhosRevisao(Model model, @PathVariable("idEvento") Long idEvento, RedirectAttributes redirect) {
 		Evento evento = eventoService.buscarEventoPorId(idEvento);
-		Pessoa p = PessoaLogadaUtil.pessoaLogada();
-		List<ParticipacaoEvento> participacoesComoRevisor = participacaoEventoService
-				.getEventosDoRevisor(EstadoEvento.ATIVO, p.getId());
-		List<Long> eventosComoRevisor = new ArrayList<>();
-		for (ParticipacaoEvento participacaoEvento : participacoesComoRevisor) {
-			eventosComoRevisor.add(participacaoEvento.getEvento().getId());
-		}
-
+		List<Long> eventosComoRevisor = eventosComoRevisor();
 		if (!evento.isPeriodoRevisao()) {
 			redirect.addFlashAttribute("periodoRevisaoError", messageService.getMessage(FORA_PERIODO_REVISAO));
 			return "redirect:/eventoOrganizador";
@@ -110,6 +103,17 @@ public class RevisorController {
 		model.addAttribute("evento", evento);
 
 		return REVISOR_TRABALHOS_REVISAO;
+	}
+
+	private List<Long> eventosComoRevisor() {
+		Pessoa p = PessoaLogadaUtil.pessoaLogada();
+		List<ParticipacaoEvento> participacoesComoRevisor = participacaoEventoService
+				.getEventosDoRevisor(EstadoEvento.ATIVO, p.getId());
+		List<Long> eventosComoRevisor = new ArrayList<>();
+		for (ParticipacaoEvento participacaoEvento : participacoesComoRevisor) {
+			eventosComoRevisor.add(participacaoEvento.getEvento().getId());
+		}
+		return eventosComoRevisor;
 	}
 
 	//@PreAuthorize("isRevisorInTrabalho(#idTrabalho)")

@@ -35,14 +35,7 @@ public class ParticipacaoEventoService {
 				participacaoEventoRepository.save(participacao);
 			} else {		
 			
-				boolean save = false;
-				
-				for(ParticipacaoEvento participacaoTemp : participacoes){
-					if(!participacaoTemp.getPapel().equals(participacao.getPapel())){
-						save = true;
-					}
-				}
-				
+				boolean save = save(participacao, participacoes);
 				if(save){
 					participacaoEventoRepository.save(participacao);
 				}
@@ -53,6 +46,15 @@ public class ParticipacaoEventoService {
 		}catch (Exception e) {
 			return false;
 		}
+	}
+	private boolean save(ParticipacaoEvento participacao, List<ParticipacaoEvento> participacoes) {
+		boolean save = false;
+		for (ParticipacaoEvento participacaoTemp : participacoes) {
+			if (!participacaoTemp.getPapel().equals(participacao.getPapel())) {
+				save = true;
+			}
+		}
+		return save;
 	}
 	
 	public void removerParticipacaoEventoDoOrganizador(Evento evento, Pessoa pessoa){

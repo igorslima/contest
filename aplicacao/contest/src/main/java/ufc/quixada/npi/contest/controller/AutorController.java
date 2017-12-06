@@ -137,10 +137,7 @@ public class AutorController {
 			List<Revisao> revisoes = revisaoService.getRevisaoByTrabalho(trabalho);
 			if (!revisoes.isEmpty()) {
 				model.addAttribute("titulo", trabalho.getTitulo());
-				List<Map<String, String>> revisoesWrappers = new ArrayList<>();
-				for (Revisao revisao : revisoes) {
-					revisoesWrappers.add(RevisaoJSON.fromJson(revisao));
-				}
+				List<Map<String, String>> revisoesWrappers = revisoesWrappers(revisoes);
 				model.addAttribute("revisoes", revisoesWrappers);
 				return Constants.TEMPLATE_REVISAO_AUTOR;
 			}
@@ -148,6 +145,14 @@ public class AutorController {
 			return "redirect:/autor/listarTrabalhos/" + evento.getId();
 		}
 		return AUTOR_SEM_PERMISSAO_REVISAO;
+	}
+
+	private List<Map<String, String>> revisoesWrappers(List<Revisao> revisoes) {
+		List<Map<String, String>> revisoesWrappers = new ArrayList<>();
+		for (Revisao revisao : revisoes) {
+			revisoesWrappers.add(RevisaoJSON.fromJson(revisao));
+		}
+		return revisoesWrappers;
 	}
 
 	// Este método permite visualizar os eventos que o autor pode participar, e os eventos que está participando
@@ -203,26 +208,29 @@ public class AutorController {
 			eventos = eventoService.buscarEventosParticapacaoAutor(autorLogado.getId());
 		}
 		if (eventos != null) {
-			List<String> trabalhosEventos = new ArrayList<>();
-
-			for (Evento evento : eventos) {
-				if (submissaoService.existeTrabalhoNesseEvento(evento.getId())) {
-					if (revisaoService.existeTrabalhoNesseEvento(evento.getId())) {
-						trabalhosEventos.add(TEM_REVISAO);
-					} else {
-						trabalhosEventos.add(NAO_TEM_REVISAO);
-					}
-				} else {
-					trabalhosEventos.add(NAO_TEM_REVISAO);
-				}
-			}
-
+			List<String> trabalhosEventos = trabalhosEventos(eventos);
 			model.addAttribute("eventos", eventos);
 			model.addAttribute("trabalhosEvento", trabalhosEventos);
 		} else {
 			model.addAttribute("naoHaTrabalhos", messageService.getMessage(NAO_HA_TRABALHOS));
 		}
 		return Constants.TEMPLATE_MEUS_TRABALHOS_AUTOR;
+	}
+
+	private List<String> trabalhosEventos(List<Evento> eventos) {
+		List<String> trabalhosEventos = new ArrayList<>();
+		for (Evento evento : eventos) {
+			if (submissaoService.existeTrabalhoNesseEvento(evento.getId())) {
+				if (revisaoService.existeTrabalhoNesseEvento(evento.getId())) {
+					trabalhosEventos.add(TEM_REVISAO);
+				} else {
+					trabalhosEventos.add(NAO_TEM_REVISAO);
+				}
+			} else {
+				trabalhosEventos.add(NAO_TEM_REVISAO);
+			}
+		}
+		return trabalhosEventos;
 	}
 
 	@RequestMapping(value = "/meusTrabalhos", method = RequestMethod.GET)

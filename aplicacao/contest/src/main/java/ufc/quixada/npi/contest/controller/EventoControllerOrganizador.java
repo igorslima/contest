@@ -204,19 +204,7 @@ public class EventoControllerOrganizador extends EventoGenericoController {
 
 	@RequestMapping("/evento/{id}/trabalhos")
 	public String verTrabalhosDoEvento(@PathVariable("id") Long idEvento, Model model) {
-		List<Trabalho> trabalhos = trabalhoService.getTrabalhosEvento(eventoService.buscarEventoPorId(idEvento));
-		String resultado;
-		List<String> resultadoRevisoes = new ArrayList<>();
-
-		for (Trabalho trabalho : trabalhos) {
-			if (trabalho.getStatus() == null) {
-				resultado = trabalhoService.mensurarAvaliacoes(trabalho);
-				trabalho.setStatus(resultado);
-			}
-
-			resultadoRevisoes.addAll(trabalhoService.pegarConteudo(trabalho));
-		}
-
+		List<String> resultadoRevisoes = resultadoRevisoes(idEvento);
 		Evento evento = eventoService.buscarEventoPorId(idEvento);
 		if (evento == null) {
 			return "redirect:/error";
@@ -229,6 +217,20 @@ public class EventoControllerOrganizador extends EventoGenericoController {
 		model.addAttribute("opcoesFiltro", Avaliacao.values());
 		model.addAttribute("trabalhos", trabalhosDoEvento);
 		return TRABALHOS_DO_EVENTO;
+	}
+
+	private List<String> resultadoRevisoes(Long idEvento) {
+		List<Trabalho> trabalhos = trabalhoService.getTrabalhosEvento(eventoService.buscarEventoPorId(idEvento));
+		String resultado;
+		List<String> resultadoRevisoes = new ArrayList<>();
+		for (Trabalho trabalho : trabalhos) {
+			if (trabalho.getStatus() == null) {
+				resultado = trabalhoService.mensurarAvaliacoes(trabalho);
+				trabalho.setStatus(resultado);
+			}
+			resultadoRevisoes.addAll(trabalhoService.pegarConteudo(trabalho));
+		}
+		return resultadoRevisoes;
 	}
 
 	@RequestMapping(value = "/evento/trabalho/revisor", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -572,12 +574,7 @@ public class EventoControllerOrganizador extends EventoGenericoController {
 	public String addOrganizadores(@RequestParam(required = false) String idOrganizadores,
 			@RequestParam String idEvento, Model model) {
 		if (idOrganizadores != null) {
-			String ids[] = idOrganizadores.split(Pattern.quote(","));
-			List<Pessoa> organizadores = new ArrayList<>();
-
-			for (String id : ids) {
-				organizadores.add(pessoaService.get(Long.parseLong(id)));
-			}
+			List<Pessoa> organizadores = organizadores(idOrganizadores);
 			Evento evento = eventoService.buscarEventoPorId(Long.parseLong(idEvento));
 
 			for (Pessoa p : organizadores) {
@@ -590,6 +587,15 @@ public class EventoControllerOrganizador extends EventoGenericoController {
 			return "redirect:/eventoOrganizador/evento/" + idEvento;
 		}
 		return "redirect:/eventoOrganizador/evento/" + idEvento;
+	}
+
+	private List<Pessoa> organizadores(String idOrganizadores) throws java.lang.NumberFormatException {
+		String ids[] = idOrganizadores.split(Pattern.quote(","));
+		List<Pessoa> organizadores = new ArrayList<>();
+		for (String id : ids) {
+			organizadores.add(pessoaService.get(Long.parseLong(id)));
+		}
+		return organizadores;
 	}
 
 	@RequestMapping(value = "/participarevento", method = RequestMethod.POST)
@@ -712,22 +718,24 @@ public class EventoControllerOrganizador extends EventoGenericoController {
 				trabalhos.add(trabalhoService.getTrabalhoById(id));
 			}
 			if (!trabalhos.isEmpty()) {
-				final Object[][] dados = new Object[trabalhos.size()][4];
-				for (int i = 0; i < trabalhos.size(); i++) {
-					Trabalho t = trabalhos.get(i);
-					
-
-					SimpleDateFormat formatadorData = new SimpleDateFormat("dd/MM/yyyy");
-					String data = formatadorData.format(t.getEvento().getPrazoSubmissaoFinal());
-
-					dados[i] = new Object[] { t.getAutor().getNome().toUpperCase(),
-							t.getCoautoresInString().toUpperCase(), t.getTitulo().toUpperCase(),t.getTrilha().getNome().toUpperCase(), data };
-				}
+				Object[][] dados = dados(trabalhos);
 				String[] colunas = new String[] { "Nome", "Coautores", "Título", "Trilha", "Data"};
 				gerarODS("trabalhos", colunas, dados, response);
 			}
 		}
 		return "DADOS_TRABALHOS";
+	}
+
+	private Object[][] dados(List<Trabalho> trabalhos) {
+		final Object[][] dados = new Object[trabalhos.size()][4];
+		for (int i = 0; i < trabalhos.size(); i++) {
+			Trabalho t = trabalhos.get(i);
+			SimpleDateFormat formatadorData = new SimpleDateFormat("dd/MM/yyyy");
+			String data = formatadorData.format(t.getEvento().getPrazoSubmissaoFinal());
+			dados[i] = new Object[] { t.getAutor().getNome().toUpperCase(), t.getCoautoresInString().toUpperCase(),
+					t.getTitulo().toUpperCase(), t.getTrilha().getNome().toUpperCase(), data };
+		}
+		return dados;
 	}
 
 	public Pessoa getUsuarioLogado() {

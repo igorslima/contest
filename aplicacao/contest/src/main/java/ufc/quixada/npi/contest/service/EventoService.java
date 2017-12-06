@@ -141,13 +141,18 @@ public class EventoService {
 			}
 			return false;
 		} else {
-			Trilha trilha = new Trilha();
-			trilha.setEvento(evento);
-			trilha.setNome("(DEFAULT)");
+			Trilha trilha = trilha(evento);
 			trilhaService.adicionarOuAtualizarTrilha(trilha);
 			eventoRepository.save(evento);
 			return true;
 		}
+	}
+
+	private Trilha trilha(Evento evento) {
+		Trilha trilha = new Trilha();
+		trilha.setEvento(evento);
+		trilha.setNome("(DEFAULT)");
+		return trilha;
 	}
 
 	public boolean removerEvento(Long id) {

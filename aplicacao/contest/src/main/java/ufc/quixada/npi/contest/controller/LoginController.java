@@ -84,14 +84,19 @@ public class LoginController {
 	public String cadastro(@Valid Pessoa pessoa, @RequestParam String senha, @RequestParam String senhaConfirma) {
 	
 		if(senhaConfirma.equals(senha)){
-			String password = pessoaService.encodePassword(senha);
-			pessoa.setPassword(password);
-			pessoa.setPapel(Tipo.USER);
+			pessoa(pessoa, senha);
 			pessoaService.addOrUpdate(pessoa);
 			return Constants.REDIRECIONAR_PARA_LOGIN;
 		}
 		
 		return "cadastro" ;
+	}
+
+
+	private void pessoa(Pessoa pessoa, String senha) {
+		String password = pessoaService.encodePassword(senha);
+		pessoa.setPassword(password);
+		pessoa.setPapel(Tipo.USER);
 	}
 	
 	@RequestMapping(path="/completar-cadastro/{token}", method=RequestMethod.GET)

@@ -121,8 +121,7 @@ public class EventoController extends EventoGenericoController {
 				eventoService.adicionarOuAtualizarEvento(eventoBd);
 				flag = eventoService.adicionarOrganizador(organizador.getEmail(), eventoBd, url);
 			}
-			eventoBd.setDescricao(evento.getDescricao());
-			eventoBd.setNome(evento.getNome());
+			eventoBd(evento, eventoBd);
 			eventoService.adicionarOuAtualizarEvento(eventoBd);
 			
 			if (flag) {
@@ -132,15 +131,9 @@ public class EventoController extends EventoGenericoController {
 			evento.setEstado(EstadoEvento.INATIVO);
 			evento.setVisibilidade(VisibilidadeEvento.PRIVADO);
 			
-			List<Trilha> trilhas = new ArrayList<>();
+			List<Trilha> trilhas = trilhas(evento);
 			List<ParticipacaoEvento> participacoes = new ArrayList<>();
-			List<Secao> secoes = new ArrayList<>();
-			Trilha trilha = new Trilha();
-			Secao secao = new Secao();
-			trilha.setEvento(evento);
-			trilha.setNome("Principal");
-			trilhas.add(trilha);
-			secoes.add(secao);
+			List<Secao> secoes = secoes();
 			evento.setSecoes(secoes);
 			evento.setTrilhas(trilhas);
 			evento.setParticipacoes(participacoes);
@@ -152,6 +145,32 @@ public class EventoController extends EventoGenericoController {
 			}
 		}
 		return "redirect:/evento/inativos";
+	}
+
+	private void eventoBd(Evento evento, Evento eventoBd) {
+		eventoBd.setDescricao(evento.getDescricao());
+		eventoBd.setNome(evento.getNome());
+	}
+
+	private List<Secao> secoes() {
+		List<Secao> secoes = new ArrayList<>();
+		Secao secao = new Secao();
+		secoes.add(secao);
+		return secoes;
+	}
+
+	private List<Trilha> trilhas(Evento evento) {
+		List<Trilha> trilhas = new ArrayList<>();
+		Trilha trilha = trilha(evento);
+		trilhas.add(trilha);
+		return trilhas;
+	}
+
+	private Trilha trilha(Evento evento) {
+		Trilha trilha = new Trilha();
+		trilha.setEvento(evento);
+		trilha.setNome("Principal");
+		return trilha;
 	}
 
 	// Método para alterar um evento
@@ -182,11 +201,15 @@ public class EventoController extends EventoGenericoController {
 	}
 
 	public void addEventoEmParticipacao(Evento evento, ParticipacaoEvento participacao, Pessoa pessoa) {
-		evento.setEstado(EstadoEvento.INATIVO);
-		evento.setVisibilidade(VisibilidadeEvento.PRIVADO);
+		evento(evento);
 		participacao.setEvento(evento);
 		participacao.setPessoa(pessoa);
 		participacao.setPapel(Tipo.ORGANIZADOR);
 		participacaoEventoService.adicionarOuEditarParticipacaoEvento(participacao);
+	}
+
+	private void evento(Evento evento) {
+		evento.setEstado(EstadoEvento.INATIVO);
+		evento.setVisibilidade(VisibilidadeEvento.PRIVADO);
 	}
 }
