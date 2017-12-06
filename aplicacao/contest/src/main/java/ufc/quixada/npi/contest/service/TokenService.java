@@ -40,18 +40,15 @@ public class TokenService {
 		Token token = new Token();
 		token.setPessoa(pessoa);
 		
-		switch(acao){
-		case Constants.ACAO_COMPLETAR_CADASTRO:
+		if(acao.equals(Constants.ACAO_COMPLETAR_CADASTRO)) {
 			token.setAcao(Constants.ACAO_COMPLETAR_CADASTRO);
-			break;
-		case Constants.ACAO_RECUPERAR_SENHA:
-			token.setAcao(Constants.ACAO_RECUPERAR_SENHA);
-			break;
-		default:
-			throw new IllegalArgumentException("Acao não existente para geração do token.");
 		}
-		
-		
+		else if(acao.equals(Constants.ACAO_RECUPERAR_SENHA)) {
+			token.setAcao(Constants.ACAO_RECUPERAR_SENHA);
+		}
+		else {
+			throw new IllegalArgumentException("Ação não existe para geração de token.");		
+		}
 		do {
 			token.setToken(UUID.randomUUID().toString());
 		} while (this.existe(token.getToken()));
