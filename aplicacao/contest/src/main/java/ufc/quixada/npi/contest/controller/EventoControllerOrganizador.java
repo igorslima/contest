@@ -715,6 +715,7 @@ public class EventoControllerOrganizador extends EventoGenericoController {
 				final Object[][] dados = new Object[trabalhos.size()][4];
 				for (int i = 0; i < trabalhos.size(); i++) {
 					Trabalho t = trabalhos.get(i);
+					
 
 					SimpleDateFormat formatadorData = new SimpleDateFormat("dd/MM/yyyy");
 					String data = formatadorData.format(t.getEvento().getPrazoSubmissaoFinal());
