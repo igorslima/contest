@@ -125,6 +125,7 @@ public class AutorController {
 		return Constants.TEMPLATE_INDEX_AUTOR;
 	}
 
+	// Este método permite ver uma revisão de uma artigo com id igual à trabalhoId
 	@RequestMapping(value = "/revisao/trabalho/{trabalhoId}", method = RequestMethod.GET)
 	public String verRevisao(@PathVariable String trabalhoId, Model model, RedirectAttributes redirect) {
 		Long idTrabalho = Long.parseLong(trabalhoId);
@@ -149,6 +150,7 @@ public class AutorController {
 		return AUTOR_SEM_PERMISSAO_REVISAO;
 	}
 
+	// Este método permite visualizar os eventos que o autor pode participar, e os eventos que está participando
 	@RequestMapping(value = "/participarEvento", method = RequestMethod.GET)
 	public String eventosAtivos(Model model) {
 		Pessoa autorLogado = PessoaLogadaUtil.pessoaLogada();
@@ -157,6 +159,7 @@ public class AutorController {
 		return Constants.TEMPLATE_INDEX_AUTOR;
 	}
 
+	// Método para o autor logado poder participar de um determinado evento
 	@RequestMapping(value = "/participarEvento", method = RequestMethod.POST)
 	public String participarEvento(@RequestParam String idEvento, Model model, RedirectAttributes redirect) {
 		if (!eventoService.existeEvento(Long.parseLong(idEvento))) {
@@ -188,7 +191,8 @@ public class AutorController {
 		}
 		return "redirect:/autor/enviarTrabalhoForm/" + idEvento;
 	}
-
+	
+	// Com esse método o autor pode listar seus trabalhos que foram submetidos para um evento
 	@RequestMapping(value = "/meusTrabalhos/evento/{eventoId}", method = RequestMethod.GET)
 	public String listarMeusTrabalhosEmEventosAtivos(@PathVariable Long eventoId, Model model) {
 		Pessoa autorLogado = PessoaLogadaUtil.pessoaLogada();
@@ -407,7 +411,7 @@ public class AutorController {
 			return "redirect:/autor/meusTrabalhos";
 		}
 	}
-
+	// método para baixar o pdf do trabalho
 	@RequestMapping(value = "/file/{trabalho}", method = RequestMethod.GET, produces = "application/pdf")
 	public void downloadPDFFile(@PathVariable("trabalho") Long idTrabalho, HttpServletResponse response)
 			throws IOException {
@@ -443,6 +447,7 @@ public class AutorController {
 		}
 	}
 
+	// método para excluit um trabalho com id igual ao de trabalhoId
 	@RequestMapping(value = "/excluirTrabalho/", method = RequestMethod.POST)
 	public String excluirTrabalho(@RequestParam("trabalhoId") String trabalhoId,
 			@RequestParam("eventoId") String eventoId, Model model, RedirectAttributes redirect) {
@@ -478,11 +483,13 @@ public class AutorController {
 			return Constants.TEMPLATE_MEUS_TRABALHOS_AUTOR;
 		}
 	}
-
+	
+	// método para validar um arquivo
 	public boolean validarArquivo(MultipartFile file) {
 		return file.getOriginalFilename().endsWith(EXTENSAO_PDF) && !file.isEmpty();
 	}
 
+	// método para configuração de uma submissão
 	public Submissao configuraSubmissao(Submissao submissao, Evento evento) {
 		submissao.setDataSubmissao(new Date(System.currentTimeMillis()));
 		if (evento.isPeriodoInicial()) {
@@ -492,7 +499,7 @@ public class AutorController {
 		}
 		return submissao;
 	}
-
+	// método para salvar um arquivo
 	private boolean saveFile(MultipartFile file, Trabalho trabalho) {
 		String nomeDoArquivo = new StringBuilder("CONT-").append(trabalho.getEvento().getId()).toString();
 		try {

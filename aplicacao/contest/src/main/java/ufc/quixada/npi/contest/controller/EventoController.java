@@ -34,10 +34,6 @@ import ufc.quixada.npi.contest.util.Constants;
 @Controller
 @RequestMapping("/evento")
 public class EventoController extends EventoGenericoController {
-
-	// GOD CLASS
-	// TODO Colocar as Strings staticas em outra classe
-	// TODO refatorar método adicionarEvento
 	
 	private static final String EVENTO_INATIVO_EXCLUIDO_ERRO = "EVENTO_INATIVO_EXCLUIDO_ERRO";
 	private static final String ERRO_EXCLUIR = "erroExcluir";
@@ -64,12 +60,14 @@ public class EventoController extends EventoGenericoController {
 
 	@Autowired
 	private MessageService messageService;
+	
 
 	@ModelAttribute("pessoas")
 	public List<Pessoa> listaPossiveisOrganizadores() {
 		return pessoaService.getPossiveisOrganizadores();
 	}
 
+	// método para listar todos os eventos ativos
 	@RequestMapping(value = { "/ativos", "" }, method = RequestMethod.GET)
 	public String listarEventosAtivos(Model model) {
 		List<Evento> listaEventos = eventoService.buscarEventoPorEstado(EstadoEvento.ATIVO);
@@ -77,7 +75,7 @@ public class EventoController extends EventoGenericoController {
 
 		return Constants.TEMPLATE_LISTAR_EVENTOS_ATIVOS_ADMIN;
 	}
-
+	// método para listar todos os eventos inativos
 	@RequestMapping(value = "/inativos", method = RequestMethod.GET)
 	public String listarEventosInativos(Model model) {
 		List<Evento> listaEventos = eventoService.buscarEventoPorEstado(EstadoEvento.INATIVO);
@@ -119,12 +117,10 @@ public class EventoController extends EventoGenericoController {
 			Evento eventoBd = eventoService.buscarEventoPorId(evento.getId());
 			
 			if(!eventoBd.getOrganizadores().get(0).getEmail().equals(organizador.getEmail())){
-				
 				eventoBd.getParticipacoes().clear();
 				eventoService.adicionarOuAtualizarEvento(eventoBd);
 				flag = eventoService.adicionarOrganizador(organizador.getEmail(), eventoBd, url);
 			}
-			
 			eventoBd.setDescricao(evento.getDescricao());
 			eventoBd.setNome(evento.getNome());
 			eventoService.adicionarOuAtualizarEvento(eventoBd);
@@ -139,37 +135,33 @@ public class EventoController extends EventoGenericoController {
 			List<Trilha> trilhas = new ArrayList<>();
 			List<ParticipacaoEvento> participacoes = new ArrayList<>();
 			List<Secao> secoes = new ArrayList<>();
-
 			Trilha trilha = new Trilha();
 			Secao secao = new Secao();
 			trilha.setEvento(evento);
 			trilha.setNome("Principal");
 			trilhas.add(trilha);
 			secoes.add(secao);
-
 			evento.setSecoes(secoes);
 			evento.setTrilhas(trilhas);
 			evento.setParticipacoes(participacoes);
-			evento.setSecoes(secoes);
-			
+			evento.setSecoes(secoes);	
 			eventoService.adicionarOuAtualizarEvento(evento);
 			flag = eventoService.adicionarOrganizador(organizador.getEmail(), evento, url);
 			if (flag) {
 				redirect.addFlashAttribute(SUCESSO_CADASTRAR, messageService.getMessage(EVENTO_CADASTRADO_COM_SUCESSO));
 			}
 		}
-
-		
-
 		return "redirect:/evento/inativos";
 	}
 
+	// Método para alterar um evento
 	@RequestMapping(value = "/editar/{id}", method = RequestMethod.GET)
 	public String alterarEventoAdmin(@PathVariable String id, Model model, RedirectAttributes redirect) {
 		return alterarEvento(id, model, redirect, Constants.TEMPLATE_ADICIONAR_OU_EDITAR_EVENTO_ADMIN,
 				"redirect:/evento/inativos");
 	}
 
+	// Método para remover um evento
 	@RequestMapping(value = "/remover", method = RequestMethod.POST)
 	public String removerEvento(@RequestParam("idEvento") String id, RedirectAttributes redirect) {
 		try {

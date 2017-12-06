@@ -37,6 +37,7 @@ public class CoautorController {
 		return Constants.TEMPLATE_INDEX_COAUTOR;
 	}
 	
+	// método para listar trabalhos de um coautor
 	@RequestMapping(value = "/listarTrabalhos/{id}", method = RequestMethod.GET)
 	public String listarTrabalhos(@PathVariable String id, Model model, RedirectAttributes redirect) {
 
