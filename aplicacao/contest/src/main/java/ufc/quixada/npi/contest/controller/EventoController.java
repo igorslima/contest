@@ -154,6 +154,7 @@ public class EventoController extends EventoGenericoController {
 		eventoBd.setNome(evento.getNome());
 	}
 
+	//Método para listar as seção
 	private List<Secao> secoes() {
 		List<Secao> secoes = new ArrayList<>();
 		Secao secao = new Secao();
@@ -161,6 +162,7 @@ public class EventoController extends EventoGenericoController {
 		return secoes;
 	}
 
+	//Método para listar as trilhas
 	private List<Trilha> trilhas(Evento evento) {
 		List<Trilha> trilhas = new ArrayList<>();
 		Trilha trilha = trilha(evento);
