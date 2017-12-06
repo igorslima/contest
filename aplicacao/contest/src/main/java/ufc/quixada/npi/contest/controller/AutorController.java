@@ -217,6 +217,7 @@ public class AutorController {
 		return Constants.TEMPLATE_MEUS_TRABALHOS_AUTOR;
 	}
 
+	//Método para listar os trabalhos de cada evento
 	private List<String> trabalhosEventos(List<Evento> eventos) {
 		List<String> trabalhosEventos = new ArrayList<>();
 		for (Evento evento : eventos) {
@@ -233,11 +234,13 @@ public class AutorController {
 		return trabalhosEventos;
 	}
 
+	//Método para listar os trabalhos de uma pessoa em um evento ativo
 	@RequestMapping(value = "/meusTrabalhos", method = RequestMethod.GET)
 	public String listarMeusTrabalhosEmEventosAtivos(Model model) {
 		return listarMeusTrabalhosEmEventosAtivos(null, model);
 	}
 
+	//Método para enviar trabalho usando Get
 	@RequestMapping(value = "/enviarTrabalhoForm/{id}", method = RequestMethod.GET)
 	public String enviarTrabalhoForm(@PathVariable String id, Model model, RedirectAttributes redirect) {
 		try {
@@ -260,6 +263,7 @@ public class AutorController {
 		}
 	}
 
+	//Método para enviar trabalho usando Post
 	@RequestMapping(value = "/enviarTrabalhoForm", method = RequestMethod.POST)
 	public String enviarTrabalhoForm(@Valid Trabalho trabalho, BindingResult result, Model model,
 			@RequestParam(value = "file", required = true) MultipartFile file,
@@ -353,6 +357,7 @@ public class AutorController {
 		}
 	}
 
+	//Método para reenviar trabalho
 	@RequestMapping(value = "/reenviarTrabalho", method = RequestMethod.POST)
 	public String reenviarTrabalhoForm(@RequestParam("trabalhoId") String trabalhoId,
 			@RequestParam("eventoId") String eventoId,
@@ -397,6 +402,7 @@ public class AutorController {
 		}
 	}
 
+	//Método para listar trabalhos
 	@PreAuthorize("isAutorInEvento(#id)")
 	@RequestMapping(value = "/listarTrabalhos/{id}", method = RequestMethod.GET)
 	public String listarTrabalhos(@PathVariable String id, Model model, RedirectAttributes redirect) {
