@@ -33,35 +33,42 @@ public class Trilha {
 	@ManyToOne(cascade=CascadeType.PERSIST)
 	private Evento evento;
 	
+	// Método que lista os trabalhos da trilha
 	public List<Trabalho> getTrabalhos() {
 		return trabalhos;
 	}
 
+	// Método que altera os trabalhos da trilha
 	public void setTrabalhos(List<Trabalho> trabalhos) {
 		this.trabalhos = trabalhos;
 	}
 
-
+	//Método que retorna o identificador da trilha
 	public Long getId() {
 		return id;
 	}
 
+	//Método que altera o identificador da trilha
 	public void setId(Long id) {
 		this.id = id;
 	}
 
+	//Método que retorna o nome da trilha
 	public String getNome() {
 		return nome;
 	}
 
+	//Método que altera o nome da trilha
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
 
+	//Método que retorna o evento
 	public Evento getEvento() {
 		return evento;
 	}
 
+	//Método que altera o evento
 	public void setEvento(Evento evento) {
 		this.evento = evento;
 	}
@@ -74,6 +81,7 @@ public class Trilha {
 		return result;
 	}
 
+	//Método que compara o objeto atual com outro
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null || getClass() != obj.getClass())
@@ -87,10 +95,13 @@ public class Trilha {
 		return true;
 	}
 	
+	//Método que transforma em string
 	@Override
 	public String toString() {
 		return "Trilha [id=" + id + ", nome=" + nome + ", evento=" + evento + "]";
 	}
+	
+	//Método que retorna a quantidade de trabalhos 
 	public int getNumeroTrabalhos(){
 		return this.trabalhos.size();
 	}
