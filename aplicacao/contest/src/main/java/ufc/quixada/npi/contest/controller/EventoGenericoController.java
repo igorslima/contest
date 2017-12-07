@@ -99,6 +99,8 @@ public class EventoGenericoController {
         return viewFallha;
 	}
 	
+	
+	
 	public String ativarOuEditarEvento(@Valid Evento evento, BindingResult result, Model model, RedirectAttributes redirect, 
 			String viewSucesso, String viewFallha){
 		eventoValidator.validate(evento, result);
