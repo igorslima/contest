@@ -40,5 +40,4 @@ public class PessoaValidator implements Validator{
 			errors.rejectValue(null, PESSOA_NULL , messageService.getMessage(PESSOA_INVALIDA));
 		}
 	}
-
 }

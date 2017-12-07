@@ -6,7 +6,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import ufc.quixada.npi.contest.model.Pessoa;
 
-
 public class PessoaLogadaUtil {
 	
 	private PessoaLogadaUtil(){
