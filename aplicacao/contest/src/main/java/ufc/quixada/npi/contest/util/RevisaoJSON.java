@@ -36,8 +36,6 @@ public class RevisaoJSON {
 		for(String key : json.keySet()){
 			revisaoWrapper.put(key, json.getString(key));
 		}
-		return revisaoWrapper;
-		
-	}
-	
+		return revisaoWrapper;	
+	}	
 }
