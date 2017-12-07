@@ -173,9 +173,13 @@ public class Trabalho implements Comparable<Trabalho> {
 	
 	public void setCoautores(List<Pessoa> coautores) {
 		for (Pessoa pessoa : coautores) {
-			ParticipacaoTrabalho participacaoCoautor = participacao_Coautor(pessoa);
-			participacoes.add(participacaoCoautor);
+			_participacoes(pessoa);
 		}
+	}
+
+	private void _participacoes(Pessoa pessoa) {
+		ParticipacaoTrabalho participacaoCoautor = participacao_Coautor(pessoa);
+		participacoes.add(participacaoCoautor);
 	}
 
 	private ParticipacaoTrabalho participacao_Coautor(Pessoa pessoa) {

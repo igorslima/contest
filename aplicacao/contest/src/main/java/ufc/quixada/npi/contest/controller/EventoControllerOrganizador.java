@@ -215,16 +215,21 @@ public class EventoControllerOrganizador extends EventoGenericoController {
 
 	private List<String> resultadoRevisoes(Long idEvento) {
 		List<Trabalho> trabalhos = trabalhoService.getTrabalhosEvento(eventoService.buscarEventoPorId(idEvento));
-		String resultado;
+		String resultado = "";
 		List<String> resultadoRevisoes = new ArrayList<>();
 		for (Trabalho trabalho : trabalhos) {
-			if (trabalho.getStatus() == null) {
-				resultado = trabalhoService.mensurarAvaliacoes(trabalho);
-				trabalho.setStatus(resultado);
-			}
+			trabalhoStatusIsNull(trabalho, resultado);
 			resultadoRevisoes.addAll(trabalhoService.pegarConteudo(trabalho));
 		}
 		return resultadoRevisoes;
+	}
+	
+	// Verifica se o status de um trabalho é nulo.
+	public void trabalhoStatusIsNull(Trabalho trabalho, String resultado){
+		if(trabalho.getStatus() == null){
+			resultado = trabalhoService.mensurarAvaliacoes(trabalho);
+			trabalho.setStatus(resultado);
+		}
 	}
 
 	@RequestMapping(value = "/evento/trabalho/revisor", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -305,8 +310,7 @@ public class EventoControllerOrganizador extends EventoGenericoController {
 				.getEventosDoOrganizador(EstadoEvento.ATIVO, p.getId());
 		boolean existeEventos = true;
 
-		if (eventosAtivos.isEmpty())
-			existeEventos = false;
+		eventosAtivosIsEmpty(eventosAtivos, existeEventos);
 
 		List<Long> eventosComoRevisor = new ArrayList<>();
 		List<Long> eventosComoOrganizador = new ArrayList<>();
@@ -324,6 +328,12 @@ public class EventoControllerOrganizador extends EventoGenericoController {
 		model.addAttribute("eventosComoOrganizador", eventosComoOrganizador);
 		model.addAttribute("eventosComoRevisor", eventosComoRevisor);
 		return Constants.TEMPLATE_LISTAR_EVENTOS_ATIVOS_ORG;
+	}
+	
+	// Verifica se uma lista de eventos ativos é vazia.
+	public void eventosAtivosIsEmpty(List<Evento> eventosAtivos, boolean existeEventos){
+		if (eventosAtivos.isEmpty())
+			existeEventos = false;
 	}
 
 	@PreAuthorize("isOrganizador()")
