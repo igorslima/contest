@@ -234,7 +234,7 @@ public class Trabalho implements Comparable<Trabalho> {
 	}
 	
 	public boolean isRevisado(){
-		return (revisoes != null && revisoes.size() > 0) ? true : false;
+		return (revisoes != null && revisoes.size() > 0);
 	}
 	
 	public boolean isIndicadoMelhoresTrabalhos(){
