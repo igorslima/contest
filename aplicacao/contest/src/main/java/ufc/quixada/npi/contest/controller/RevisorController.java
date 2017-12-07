@@ -89,7 +89,6 @@ public class RevisorController {
 	@RequestMapping(value = "/{idEvento}/trabalhosRevisao")
 	public String trabalhosRevisao(Model model, @PathVariable("idEvento") Long idEvento, RedirectAttributes redirect) {
 		Evento evento = eventoService.buscarEventoPorId(idEvento);
-		List<Long> eventosComoRevisor = eventosComoRevisor();
 		if (!evento.isPeriodoRevisao()) {
 			redirect.addFlashAttribute("periodoRevisaoError", messageService.getMessage(FORA_PERIODO_REVISAO));
 			return "redirect:/eventoOrganizador";
