@@ -51,14 +51,6 @@ public class Token {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null || getClass() != obj.getClass())
-			return false;
-		Token other = (Token) obj;
-		if (codigoToken == null) {
-			if (other.codigoToken != null)
-				return false;
-		} else if (!codigoToken.equals(other.codigoToken))
-			return false;
-		return true;
+		return obj == this;
 	}
 }

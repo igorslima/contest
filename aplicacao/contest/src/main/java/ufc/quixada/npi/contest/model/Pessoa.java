@@ -171,15 +171,7 @@ public class Pessoa implements UserDetails, Comparable<Pessoa> {
 	// Método compara se o objeto atual é igual à outro objeto 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null || getClass() != obj.getClass())
-			return false;
-		Pessoa other = (Pessoa) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
+		return obj == this;
 	}
 
 	@Override

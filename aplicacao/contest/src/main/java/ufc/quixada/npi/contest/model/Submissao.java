@@ -85,14 +85,7 @@ public class Submissao {
 
 	@Override
 	public boolean equals(Object obj) {
-		Submissao other = (Submissao) obj;
-		if ((obj == null || getClass() != obj.getClass()) || (id == null && other.id != null))
-			return false;
-		if(id != null && !id.equals(other.id)){
-			return false;
-		}
-		
-		return true;
+		return this == obj;
 	}
 
 	@Override
