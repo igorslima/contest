@@ -49,7 +49,6 @@ public class CustomMethodSecurityExpressionRoot extends SecurityExpressionRoot i
     }
     
     //RESTRIÇÕES PARA REVISOR
-    
     public boolean isRevisorInTrabalho(Long trabalhoId){
     	Pessoa pessoa = (Pessoa)getPrincipal();
     	
@@ -61,6 +60,7 @@ public class CustomMethodSecurityExpressionRoot extends SecurityExpressionRoot i
     	return false;
     }
     
+    // verficar se uma pessoa é revisor do evento com id = eventoId
     public boolean isRevisorInEvento(Long eventoId){
     	Pessoa pessoa = (Pessoa)getPrincipal();
     	
@@ -76,7 +76,7 @@ public class CustomMethodSecurityExpressionRoot extends SecurityExpressionRoot i
     	Pessoa pessoa = (Pessoa) this.getPrincipal();
     	
     	for(Secao secao : pessoa.getSecoes()){
-    		if( secao.getId() == secaoId ){
+    		if(secao.getId() == secaoId){
     			return true;
     		}
     	}

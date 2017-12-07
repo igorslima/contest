@@ -21,6 +21,7 @@ import ufc.quixada.npi.contest.service.StorageService;
 @EnableConfigurationProperties(StorageProperties.class)
 public class ContestApplication extends SpringBootServletInitializer {
 
+	// start da aplicação
 	public static void main(String[] args) {
 		SpringApplication.run(ContestApplication.class, args);
 	}
