@@ -60,62 +60,77 @@ public class Trabalho implements Comparable<Trabalho> {
 	@ManyToOne
 	private Secao secao;
 	
+	// Retorna o id do Trabalho
 	public Long getId() {
 		return id;
 	}
 
+	// Altera o tipo do Trabalho
 	public void setId(Long id) {
 		this.id = id;
 	}
 
+	// Retorna a lista de submissões do Trabalho
 	public List<Submissao> getSubmissoes() {
 		return submissoes;
 	}
 	
+	// Altera a lista de submissões do Trabalho
 	public void setSubmissoes(List<Submissao> submissoes) {
 		this.submissoes = submissoes;
 	}
 	
+	// Retorna a lista de revisões
 	public List<Revisao> getRevisoes() {
 		return revisoes;
 	}
 	
+	// Altera a lista de revisões
 	public void setRevisoes(List<Revisao> revisoes) {
 		this.revisoes = revisoes;
 	}
 	
+	// Retorna o path
 	public String getPath() {
 		return path;
 	}
 
+	// Altera o path
 	public void setPath(String path) {
 		this.path = path;
 	}
 
+	// Retorna o titulo
 	public String getTitulo() {
 		return titulo;
 	}
 
+	// Altera o titulo
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
 	}
 
+	// Retorna o evento
 	public Evento getEvento() {
 		return evento;
 	}
 
+	// Altera o evento
 	public void setEvento(Evento evento) {
 		this.evento = evento;
 	}
 
+	// Altera a trilha
 	public void setTrilha(Trilha trilha) {
 		this.trilha = trilha;
 	}
 
+	// Retorna a lista de participacoes
 	public List<ParticipacaoTrabalho> getParticipacoes() {
 		return participacoes;
 	}
 
+	// Altera a lista de participacoes
 	public void setParticipacoes(List<ParticipacaoTrabalho> participacoes) {
 		this.participacoes = participacoes;
 	}
@@ -133,6 +148,7 @@ public class Trabalho implements Comparable<Trabalho> {
 		return obj == this;
 	}
 	
+	// Altera os autores e coautores
 	public void setAutores(Pessoa autor, List<Pessoa> coautores){
 		ParticipacaoTrabalho participacaoAutor = participacaoAutor(autor);
 		participacoes = new ArrayList<ParticipacaoTrabalho>();
@@ -163,6 +179,7 @@ public class Trabalho implements Comparable<Trabalho> {
 		return participacaoCoautor;
 	}
 	
+	// Altera os coautores
 	public void setCoautores(List<Pessoa> coautores) {
 		for (Pessoa pessoa : coautores) {
 			_participacoes(pessoa);
