@@ -64,12 +64,6 @@ import ufc.quixada.npi.contest.util.PessoaLogadaUtil;
 @Controller
 @RequestMapping("/eventoOrganizador")
 public class EventoControllerOrganizador extends EventoGenericoController {
-	// GOD CLASS 
-	// TODO Colocar as Strings staticas em outra classe
-	
-	// TODO Refatorar método detalhesEvento
-	// TODO Refatorar método gerenciarRevisor
-	// TODO Refatorar método convidarPorEmail
 	
 	private static final String ORGANIZADOR_ERROR = "organizadorError";
 	private static final String ERRO_ENVIO_EMAIL = "ERRO_ENVIO_EMAIL";
@@ -477,35 +471,29 @@ public class EventoControllerOrganizador extends EventoGenericoController {
 
 			boolean flag = false;
 
-			switch (funcao) {
-			case "ORGANIZADOR":
+			if(funcao.equals("ORGANIZADOR")) {
 				for (String e : emails) {
 					e = e.trim();
 					flag = eventoService.adicionarOrganizador(e, evento, url);
 				}
-
-				break;
-
-			case "AUTOR":
+			}
+			else if(funcao.equals("AUTOR")) {
 				flag = eventoService.adicionarAutor(email, evento, url);
-				break;
-
-			case "REVISOR":
+			}
+			else if(funcao.equals("REVISOR")) {
 				for (String e : emails) {
 					e = e.trim();
 					flag = eventoService.adicionarRevisor(e, evento, url);
 				}
-				break;
-
-			default:
-				break;
 			}
 
-			if (!flag) {
-				redirect.addFlashAttribute(ORGANIZADOR_ERROR, messageService.getMessage(ERRO_ENVIO_EMAIL));
-			} else {
+			if(flag) {
 				redirect.addFlashAttribute("organizadorSucess", messageService.getMessage(EMAIL_ENVIADO_SUCESSO));
 			}
+			else {
+				redirect.addFlashAttribute(ORGANIZADOR_ERROR, messageService.getMessage(ERRO_ENVIO_EMAIL));
+			}
+			
 		} else {
 			redirect.addFlashAttribute(ORGANIZADOR_ERROR, messageService.getMessage(CONVIDAR_EVENTO_INATIVO));
 		}
