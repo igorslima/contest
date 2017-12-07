@@ -99,7 +99,6 @@ public class RevisorController {
 		model.addAttribute("trabalhos", trabalhoService.getTrabalhosParaRevisar(revisor.getId(), idEvento));
 		model.addAttribute("trabalhosRevisados",
 				trabalhoService.getTrabalhosRevisadosDoRevisor(revisor.getId(), idEvento));
-
 		model.addAttribute("evento", evento);
 
 		return REVISOR_TRABALHOS_REVISAO;
@@ -138,7 +137,6 @@ public class RevisorController {
 		}
 
 		if (participacaoTrabalhoService.getParticipacaoTrabalhoRevisor(revisor.getId(), trabalho.getId()) != null) {
-
 			model.addAttribute("nomeEvento", evento.getNome());
 			model.addAttribute("idEvento", evento.getId());
 			model.addAttribute("trabalho", trabalho);
@@ -148,7 +146,6 @@ public class RevisorController {
 			return REVISOR_AVALIAR_TRABALHO;
 		}
 		return REVISOR_SEM_PERMISSAO;
-
 	}
 
 	@RequestMapping(value = "/avaliar", method = RequestMethod.POST)
@@ -206,18 +203,14 @@ public class RevisorController {
 			revisao.setTrabalho(trabalho);
 			revisao.setObservacoes(comentarios_organizacao);
 
-			switch (avaliacao_final) {
-			case "APROVADO":
+			if(avaliacao_final.equals("APROVADO")) {
 				revisao.setAvaliacao(Avaliacao.APROVADO);
-				break;
-			case "RESSALVAS":
+			}
+			else if(avaliacao_final.equals("RESSALVAS")) {
 				revisao.setAvaliacao(Avaliacao.RESSALVAS);
-				break;
-			case "REPROVADO":
+			}
+			else if(avaliacao_final.equals("REPROVADO")) {
 				revisao.setAvaliacao(Avaliacao.REPROVADO);
-				break;
-			default:
-				break;
 			}
 
 			revisaoService.addOrUpdate(revisao);
@@ -236,11 +229,9 @@ public class RevisorController {
 		if (trabalhoService.existeTrabalho(Long.valueOf(idTrabalho))) {
 			Trabalho trabalho = trabalhoService.getTrabalhoById(Long.valueOf(idTrabalho));
 			baixarTrabalho(response, trabalho);
-
 			session.setAttribute("ID_TRABALHO_REVISOR", idTrabalho);
 			return "redirect:/revisor/" + session.getAttribute("ID_EVENTO_REVISOR") + "/" + idTrabalho + "/revisar";
 		}
-
 		redirect.addFlashAttribute("trabalhoNaoExisteError", messageService.getMessage(TRABALHO_NAO_EXISTE));
 		return "redirect:/revisor/" + session.getAttribute("ID_EVENTO_REVISOR") + "/"
 				+ session.getAttribute("ID_TRABALHO_REVISOR") + "/revisar";
@@ -291,15 +282,11 @@ public class RevisorController {
 
 		return "redirect:/revisor/";
 	}
-
-
 	
 	@RequestMapping(value = "/evento/{id}")
 	public String paginaRevisor(@PathVariable Long id, Model model) {
-		
 		String cpf = SecurityContextHolder.getContext().getAuthentication().getName();
 		Pessoa pessoaAux = pessoaService.getByCpf(cpf);		
-		
 		List<Evento> eventos;
 		
 		if(id != null) {
@@ -310,7 +297,6 @@ public class RevisorController {
 		}
 		
 		model.addAttribute("pessoa", pessoaAux);
-		
 		model.addAttribute("eventos", eventos);
 				
 		return "revisor/revisor_meus_eventos";
@@ -350,9 +336,7 @@ public class RevisorController {
 		model.addAttribute("eventosComoOrganizador", eventosComoOrganizador);
 		model.addAttribute("eventosComoRevisor", eventosComoRevisor);
 		return Constants.TEMPLATE_LISTAR_EVENTOS_ATIVOS_REV;
-
 	}
-
 	
 	@RequestMapping(value = "/evento/{id}/detalhes", method = RequestMethod.GET)
 	public String detalhesEvento(@PathVariable String id, Model model) {
@@ -400,6 +384,4 @@ public class RevisorController {
 
 		return Constants.TEMPLATE_DETALHES_EVENTO_REV;
 	}
-	
-	
 }
