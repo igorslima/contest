@@ -168,9 +168,7 @@ public class RevisorController {
 		Trabalho trabalho = trabalhoService.getTrabalhoById(Long.valueOf(idTrabalho));
 		Pessoa revisor = PessoaLogadaUtil.pessoaLogada();
 
-		if (trabalho == null) {
-			return "redirect:/error";
-		} else if (trabalho.getEvento() == null) {
+		if (trabalho == null || trabalho.getEvento() == null) {
 			return "redirect:/error";
 		} else if (!trabalho.getEvento().isPeriodoRevisao()) {
 			redirect.addFlashAttribute("periodoRevisaoError", messageService.getMessage(FORA_PERIODO_REVISAO));
