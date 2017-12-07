@@ -598,7 +598,7 @@ public class EventoControllerOrganizador extends EventoGenericoController {
 		Evento evento = eventoService.buscarEventoPorId(Long.parseLong(idEvento));
 
 		if (evento != null) {
-			if (evento.getEstado() == EstadoEvento.ATIVO) {
+			if (evento.getEstado().equals(EstadoEvento.ATIVO)) {
 				ParticipacaoEvento participacaoEvento = new ParticipacaoEvento();
 				participacaoEvento.setEvento(evento);
 				participacaoEvento.setPessoa(professorLogado);
