@@ -77,71 +77,71 @@ public class Evento {
 	
 	@OneToMany(mappedBy="evento",cascade=CascadeType.ALL, orphanRemoval=false)
 	private List<Secao> secoes;
-
+	// retorna o id de um evento
 	public Long getId() {
 		return id;
 	}
-
+	// seta o id de um evento
 	public void setId(Long id) {
 		this.id = id;
 	}
-
+	// retorna o nome do evento
 	public String getNome() {
 		return nome;
 	}
-
+	// define o nome de um evento
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-
+	// retorna a descrição de um evento
 	public String getDescricao() {
 		return descricao;
 	}
-
+	// define a descrição de um evento
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-
+	// retorna a visibilidade de um evento
 	public VisibilidadeEvento getVisibilidade() {
 		return visibilidade;
 	}
-
+	// define a visibilidade de um evento
 	public void setVisibilidade(VisibilidadeEvento visibilidade) {
 		this.visibilidade = visibilidade;
 	}
-
+	// retorna o estado de um evento
 	public EstadoEvento getEstado() {
 		return estado;
 	}
-
+	// define o estado de um evento
 	public void setEstado(EstadoEvento estado) {
 		this.estado = estado;
 	}
-
+	// retorna o prazo de submissão inicial
 	public Date getPrazoSubmissaoInicial() {
 		return prazoSubmissaoInicial;
 	}
-
+	// define o prazo de submissão inicial
 	public void setPrazoSubmissaoInicial(Date prazoSubmissaoInicial) {
 		this.prazoSubmissaoInicial = prazoSubmissaoInicial;
 	}
-	
+	// retorna o prazo de submissao final
 	public Date getPrazoSubmissaoFinal() {
 		return prazoSubmissaoFinal;
 	}
-
+	// define o deadline de submissao
 	public void setPrazoSubmissaoFinal(Date prazoSubmissaoFinal) {
 		this.prazoSubmissaoFinal = prazoSubmissaoFinal;
 	}
-
+	// retorna o prazo de revisao inicial
 	public Date getPrazoRevisaoInicial() {
 		return prazoRevisaoInicial;
 	}
-
+	// define o prazo de revisao inicial
 	public void setPrazoRevisaoInicial(Date prazoRevisaoInicial) {
 		this.prazoRevisaoInicial = prazoRevisaoInicial;
 	}
-
+	// retorna o prazo de revisao final
 	public Date getPrazoRevisaoFinal() {
 		return prazoRevisaoFinal;
 	}
@@ -149,15 +149,15 @@ public class Evento {
 	public void setPrazoRevisaoFinal(Date prazoRevisaoFinal) {
 		this.prazoRevisaoFinal = prazoRevisaoFinal;
 	}
-
+	// retorna as participante de um evento
 	public List<ParticipacaoEvento> getParticipacoes() {
 		return participacoes;
 	}
-
+	// define as participantes em evento
 	public void setParticipacoes(List<ParticipacaoEvento> participacoes) {
 		this.participacoes = participacoes;
 	}
-
+	// retorna o hashCode do evento
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -180,6 +180,7 @@ public class Evento {
 		return true;
 	}
 
+	// retorna o objeto no fomat String
 	@Override
 	public String toString() {
 		return "Evento [id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", visibilidade=" + visibilidade
@@ -187,18 +188,17 @@ public class Evento {
 				+ prazoSubmissaoFinal + ", prazoRevisaoInicial=" + prazoRevisaoInicial + ", prazoRevisaoFinal="
 				+ prazoRevisaoFinal + ", participacoes=" + participacoes + "]";
 	}
-
+	// retorna as trilhas
 	public List<Trilha> getTrilhas() {
 		return trilhas;
 	}
-
+	// define as trilhas
 	public void setTrilhas(List<Trilha> trilhas) {
 		if(this.trilhas == null){
 			this.trilhas = trilhas;
 		}
 		trilhas(trilhas);
 	}
-
 	private void trilhas(List<Trilha> trilhas) {
 		this.trilhas.clear();
 		this.trilhas.addAll(trilhas);
@@ -246,7 +246,7 @@ public class Evento {
 		boolean terminaNoDiaOuAntesSubissaoFinal = (dataAtual.compareTo(diaAposSubmissaoFinal)<= 0);
 		return (comecaAposRevisaoFinal && terminaNoDiaOuAntesSubissaoFinal);
 	}
-	
+	// retora as pessoas por papeis
 	private List<Pessoa> getByPapel(Tipo ...papeis){
 		List<Pessoa> pessoa = new ArrayList<Pessoa>();
 		for (ParticipacaoEvento p : getParticipacoes()) {
@@ -258,30 +258,29 @@ public class Evento {
 		}
 		return pessoa;
 	}
-	
+	// retorna as pessoas da organizacao
 	public List<Pessoa> getOrganizadores(){
 		return getByPapel(Tipo.ORGANIZADOR);
 	}
-	
+	// retorna os revisores do evento
 	public List<Pessoa> getRevisores(){
 		return getByPapel(Tipo.REVISOR);
 	}
-	
+	// retorna os autores do evento
 	public List<Pessoa> getAutores(){
 		return getByPapel(Tipo.AUTOR);
 	}
-	
+	// retorna as secoes de um evento
 	public List<Secao> getSecoes() {
 		return secoes;
 	}
-
+	// define as sessões de um evento
 	public void setSecoes(List<Secao> secoes) {
 		if(this.secoes == null){
 			this.secoes = secoes;
 		}
 		secoes(secoes);
 	}
-
 	private void secoes(List<Secao> secoes) {
 		this.secoes.clear();
 		this.secoes.addAll(secoes);
