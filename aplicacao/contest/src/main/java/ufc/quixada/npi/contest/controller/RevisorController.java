@@ -140,7 +140,6 @@ public class RevisorController {
 			model.addAttribute("nomeEvento", evento.getNome());
 			model.addAttribute("idEvento", evento.getId());
 			model.addAttribute("trabalho", trabalho);
-
 			session.setAttribute("ID_EVENTO_REVISOR", Long.valueOf(evento.getId()));
 			session.setAttribute("ID_TRABALHO_REVISOR", Long.valueOf(idTrabalho));
 			return REVISOR_AVALIAR_TRABALHO;
