@@ -102,7 +102,6 @@ public class CustomMethodSecurityExpressionRoot extends SecurityExpressionRoot i
     	}
     	return false;
     }
-
     
     public boolean isOrientadorInTrabalho(Long trabalhoId){
     	Pessoa pessoa = (Pessoa) this.getPrincipal();

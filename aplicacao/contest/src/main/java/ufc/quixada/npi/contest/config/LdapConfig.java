@@ -39,5 +39,4 @@ public class LdapConfig {
 	public String base() {
 		return environment.getRequiredProperty(LDAP_OU);
 	}
-
 }

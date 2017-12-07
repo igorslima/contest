@@ -36,23 +36,18 @@ public class AuthenticationProviderContest implements AuthenticationProvider {
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		
 		Pessoa pessoa;
-		
 		String cpf = authentication.getName();
 		String password = authentication.getCredentials().toString();
-
-	
 		pessoa = pessoaService.getByCpf(cpf);
 
 		if (pessoa != null) { // Pessoa existe na Base Local entra no trecho abaixo
 			if (pessoaService.autentica(pessoa, cpf, password)){
 				return new UsernamePasswordAuthenticationToken(pessoa, pessoaService.encodePassword(password),
 						pessoa.getAuthorities());
-			}
-				
+			}				
 		} else {
 			final Usuario usuario = usuarioService.getByCpf(cpf);			
-			if (usuario != null && usuarioService.autentica(cpf, password)) { 
-		
+			if (usuario != null && usuarioService.autentica(cpf, password)) { 		
 				String encondedPassword = pessoaService.encodePassword(password);
 				
 				//Gera pessoa de acordo com o UsuarioLDAP
@@ -64,16 +59,12 @@ public class AuthenticationProviderContest implements AuthenticationProvider {
 				}
 			}
 			pessoaService.addOrUpdate(pessoa);
-
 			return new UsernamePasswordAuthenticationToken(pessoa, pessoaService.encodePassword(password),
 					pessoa.getAuthorities());
 			}
 		}
-
 		throw new BadCredentialsException(messageService.getMessage("LOGIN_INVALIDO"));
 	}
-
-
 
 	private Pessoa generatePessoa(final Usuario usuario, String encondedPassword) {
 		Pessoa pessoa;
@@ -87,11 +78,8 @@ public class AuthenticationProviderContest implements AuthenticationProvider {
 		return pessoa;
 	}
 
-	
-
 	@Override
 	public boolean supports(Class<?> arg0) {
 		return true;
 	}
-
 }

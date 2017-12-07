@@ -58,14 +58,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 							throws IOException, ServletException {
 						
 						String role = authentication.getAuthorities().toString();
-						
-						
+												
 						if(role.contains("ADMIN")){
 							redirectStrategy.sendRedirect(request, response, "/evento/ativos");
 						} else{
 							redirectStrategy.sendRedirect(request, response, "/dashboard");
 						}
-						
 					}
 				})
 				.failureUrl("/loginfailed")
@@ -88,6 +86,5 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 	    return new BCryptPasswordEncoder();
-	}
-	
+	}	
 }
