@@ -207,13 +207,9 @@ public class AutorController {
 		} else {
 			eventos = eventoService.buscarEventosParticapacaoAutor(autorLogado.getId());
 		}
-		if (eventos != null) {
-			List<String> trabalhosEventos = trabalhosEventos(eventos);
-			model.addAttribute("eventos", eventos);
-			model.addAttribute("trabalhosEvento", trabalhosEventos);
-		} else {
-			model.addAttribute("naoHaTrabalhos", messageService.getMessage(NAO_HA_TRABALHOS));
-		}
+		List<String> trabalhosEventos = trabalhosEventos(eventos);
+		model.addAttribute("eventos", eventos);
+		model.addAttribute("trabalhosEvento", trabalhosEventos);
 		return Constants.TEMPLATE_MEUS_TRABALHOS_AUTOR;
 	}
 
@@ -222,14 +218,12 @@ public class AutorController {
 		List<String> trabalhosEventos = new ArrayList<>();
 		for (Evento evento : eventos) {
 			if (submissaoService.existeTrabalhoNesseEvento(evento.getId())) {
-				if (revisaoService.existeTrabalhoNesseEvento(evento.getId())) {
+				if (revisaoService.existeTrabalhoNesseEvento(evento.getId())) 
 					trabalhosEventos.add(TEM_REVISAO);
-				} else {
+				else 
 					trabalhosEventos.add(NAO_TEM_REVISAO);
-				}
-			} else {
+			}else
 				trabalhosEventos.add(NAO_TEM_REVISAO);
-			}
 		}
 		return trabalhosEventos;
 	}
@@ -277,7 +271,6 @@ public class AutorController {
 					+ request.getContextPath();
 			Long idEvento = Long.parseLong(eventoId);
 			Long idTrilha = Long.parseLong(trilhaId);
-
 			evento = eventoService.buscarEventoPorId(idEvento);
 			trilha = trilhaService.get(idTrilha, idEvento);
 			if (evento == null || trilha == null) {
@@ -286,44 +279,30 @@ public class AutorController {
 			}
 			trabalho.setEvento(evento);
 			trabalho.setTrilha(trilha);
-
 			List<Pessoa> coautores = new ArrayList<Pessoa>();
 			if (trabalho.getParticipacoes() != null) {
 				for (ParticipacaoTrabalho participacao : trabalho.getParticipacoes()) {
-
 					Usuario usuarioLdap = usuarioService.getByEmail(participacao.getPessoa().getEmail());
 					Pessoa coautor; 
-					
-					if(usuarioLdap==null){
+					if(usuarioLdap == null)
 						coautor = pessoaService.getByEmail(participacao.getPessoa().getEmail());
-					}else{
+					else
 						coautor = pessoaService.getByCpf(usuarioLdap.getCpf());
-					}
-
-					if (coautor == null) {
-
-						coautor = participacao.getPessoa();
-						eventoService.adicionarCoAutor(coautor.getEmail(), evento, url);
-
-						coautor = pessoaService.getByEmail(participacao.getPessoa().getEmail());
-
-						coautor.setNome(participacao.getPessoa().getNome());
-						pessoaService.addOrUpdate(coautor);
-
-					}
+					coautor = participacao.getPessoa();
+					eventoService.adicionarCoAutor(coautor.getEmail(), evento, url);
+					coautor = pessoaService.getByEmail(participacao.getPessoa().getEmail());
+					coautor.setNome(participacao.getPessoa().getNome());
+					pessoaService.addOrUpdate(coautor);
 					coautores.add(coautor);
 				}
 			}
 			trabalho.setAutores(PessoaLogadaUtil.pessoaLogada(), coautores);
-
 			submissao = new Submissao();
 			submissao.setTrabalho(trabalho);
-
 		} catch (NumberFormatException e) {
 			redirect.addFlashAttribute("erroAoCadastrar", messageService.getMessage(ERRO_CADASTRO_TRABALHO));
 			return "redirect:/autor/meusTrabalhos";
 		}
-
 		trabalhoValidator.validate(trabalho, result);
 		if (result.hasErrors()) {
 			List<Trilha> trilhas = trilhaService.buscarTrilhas(Long.parseLong(eventoId));
@@ -336,18 +315,14 @@ public class AutorController {
 				if (evento.isPeriodoInicial()) {
 					if (saveFile(file, trabalho)) {
 						submissaoService.adicionarOuEditar(submissao);
-						redirect.addFlashAttribute("sucessoEnviarTrabalho",
-								messageService.getMessage(TRABALHO_ENVIADO));
-
+						redirect.addFlashAttribute("sucessoEnviarTrabalho", messageService.getMessage(TRABALHO_ENVIADO));
 						trabalhoService.notificarAutoresEnvioTrabalho(evento, trabalho);
-
 						return "redirect:/autor/meusTrabalhos";
 					} else {
 						return "redirect:/erro/500";
 					}
 				} else {
-					redirect.addFlashAttribute("foraDoPrazoDeSubmissao",
-							messageService.getMessage(FORA_DA_DATA_DE_SUBMISSAO));
+					redirect.addFlashAttribute("foraDoPrazoDeSubmissao", messageService.getMessage(FORA_DA_DATA_DE_SUBMISSAO));
 					return "redirect:/autor/enviarTrabalhoForm/" + eventoId;
 				}
 			} else {
