@@ -74,6 +74,7 @@ public class ParticipacaoTrabalho {
 		return result;
 	}
 
+	// Método compara se o objeto atual é igual à outro objeto 
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null || getClass() != obj.getClass())

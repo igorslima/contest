@@ -41,6 +41,5 @@ public class PapelLdap {
 		public void setTipo(String tipo) {
 			this.tipo = tipo;
 		}
-
 	}
 }

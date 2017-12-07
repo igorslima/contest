@@ -166,6 +166,7 @@ public class Evento {
 		return result;
 	}
 
+	// Método compara se o objeto atual é igual à outro objeto 
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null || getClass() != obj.getClass())
@@ -202,8 +203,8 @@ public class Evento {
 		this.trilhas.clear();
 		this.trilhas.addAll(trilhas);
 	}
-
 	
+	//Método que diz se está no periodo inicial de submissão
 	public boolean isPeriodoInicial(){
 		Date dataAtual = new Date();
 		Calendar cal = Calendar.getInstance();		
@@ -217,6 +218,7 @@ public class Evento {
 		return (dataAtual.compareTo(diaInicioSubmissao) >= 0) && (dataAtual.compareTo(diaAntesDoInicioDaRevisao) <= 0);
 	}
 	
+	// Método que diz se está no perídodo de Revisão
 	public boolean isPeriodoRevisao(){
 		Date dataAtual = new Date();
 		Calendar cal = Calendar.getInstance();
@@ -229,6 +231,7 @@ public class Evento {
 		return (comecaNoDiaOuAposInicioRevisao && terminaNoDiaOuAntesFinalRevisao);
 	}
 	
+	// Método que diz se está no perídodo final de submissão
 	public boolean isPeriodoFinal(){
 		Date dataAtual = new Date();
 		Calendar cal = Calendar.getInstance();
@@ -254,7 +257,6 @@ public class Evento {
 			}
 		}
 		return pessoa;
-		
 	}
 	
 	public List<Pessoa> getOrganizadores(){
