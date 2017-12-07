@@ -168,11 +168,7 @@ public class Evento {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
+		if (obj == null || getClass() != obj.getClass())
 			return false;
 		Evento other = (Evento) obj;
 		if (id == null) {
@@ -288,5 +284,4 @@ public class Evento {
 		this.secoes.clear();
 		this.secoes.addAll(secoes);
 	}
-	
 }

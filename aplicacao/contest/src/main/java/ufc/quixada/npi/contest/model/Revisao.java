@@ -94,11 +94,7 @@ public class Revisao {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
+		if (obj == null || getClass() != obj.getClass())
 			return false;
 		Revisao other = (Revisao) obj;
 		if (id == null) {

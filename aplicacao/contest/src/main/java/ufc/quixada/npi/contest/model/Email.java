@@ -72,6 +72,5 @@ public class Email {
   	        public Email build() {
   	            return new Email(this);
   	        }
-  	}
-	
+  	}	
 }

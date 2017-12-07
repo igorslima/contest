@@ -76,11 +76,7 @@ public class Trilha {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
+		if (obj == null || getClass() != obj.getClass())
 			return false;
 		Trilha other = (Trilha) obj;
 		if (id == null) {
@@ -98,5 +94,4 @@ public class Trilha {
 	public int getNumeroTrabalhos(){
 		return this.trabalhos.size();
 	}
-
 }

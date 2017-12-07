@@ -101,5 +101,4 @@ public class Secao {
 	public void setLocal(String local) {
 		this.local = local;
 	}
-
 }

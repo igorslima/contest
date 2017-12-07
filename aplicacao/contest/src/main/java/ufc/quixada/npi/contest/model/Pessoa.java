@@ -65,7 +65,6 @@ public class Pessoa implements UserDetails, Comparable<Pessoa> {
 	@Enumerated(EnumType.STRING)
 	private Papel.Tipo papel;
 
-	
 	public Papel.Tipo getPapel() {
 		return papel;
 	}
@@ -124,8 +123,7 @@ public class Pessoa implements UserDetails, Comparable<Pessoa> {
 		for (ParticipacaoEvento participacaoEvento : participacoesEvento) {
 			if(participacaoEvento.getEvento().equals(evento)){
 				participacoes.add(participacaoEvento);
-			}
-			
+			}			
 		}
 		return participacoes;
 	}
@@ -172,11 +170,7 @@ public class Pessoa implements UserDetails, Comparable<Pessoa> {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
+		if (obj == null || getClass() != obj.getClass())
 			return false;
 		Pessoa other = (Pessoa) obj;
 		if (id == null) {

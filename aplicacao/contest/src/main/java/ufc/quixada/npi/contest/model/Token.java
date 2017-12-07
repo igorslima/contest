@@ -17,8 +17,6 @@ public class Token {
 	
 	private String acao;
 	
-	
-
 	public Pessoa getPessoa() {
 		return pessoa;
 	}
@@ -43,7 +41,6 @@ public class Token {
 		this.codigoToken = token;
 	}
 
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -54,11 +51,7 @@ public class Token {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
+		if (obj == null || getClass() != obj.getClass())
 			return false;
 		Token other = (Token) obj;
 		if (codigoToken == null) {
@@ -68,5 +61,4 @@ public class Token {
 			return false;
 		return true;
 	}
-
 }
