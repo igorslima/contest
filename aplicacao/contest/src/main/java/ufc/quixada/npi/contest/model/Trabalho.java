@@ -22,10 +22,8 @@ import ufc.quixada.npi.contest.model.Papel.Tipo;
 @Entity
 @Table(name = "trabalho")
 public class Trabalho implements Comparable<Trabalho> {
-
-	
 	// GOD CLASS
-	// NÃO ACHEI ALGO DE MUITO GRANDE PRA SER REFATORADO
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
@@ -41,13 +39,11 @@ public class Trabalho implements Comparable<Trabalho> {
 	@ManyToOne
 	private Trilha trilha;
 	
-	
 	private String status;
 	
 	@OneToMany(mappedBy="trabalho", cascade=CascadeType.REMOVE)
 	@OrderBy("data_submissao")
 	private List<Submissao> submissoes;
-	
 
 	@OneToMany(mappedBy="trabalho", cascade=CascadeType.REMOVE)
 	private List<Revisao> revisoes;
@@ -135,11 +131,7 @@ public class Trabalho implements Comparable<Trabalho> {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
+		if (obj == null || getClass() != obj.getClass())
 			return false;
 		Trabalho other = (Trabalho) obj;
 		if (id == null) {
@@ -181,7 +173,6 @@ public class Trabalho implements Comparable<Trabalho> {
 	}
 	
 	public void setCoautores(List<Pessoa> coautores) {
-		
 		for (Pessoa pessoa : coautores) {
 			ParticipacaoTrabalho participacaoCoautor = participacao_Coautor(pessoa);
 			participacoes.add(participacaoCoautor);
@@ -294,7 +285,5 @@ public class Trabalho implements Comparable<Trabalho> {
 			return false;
 		}
 		return true;
-	}
-	
-	
+	}	
 }
