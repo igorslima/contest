@@ -94,14 +94,13 @@ public class Revisao {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null || getClass() != obj.getClass())
-			return false;
 		Revisao other = (Revisao) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
+		if ((obj == null || getClass() != obj.getClass()) || (id == null && other.id != null))
 			return false;
+		if(id != null && !id.equals(other.id)){
+			return false;
+		}
+		
 		return true;
 	}
 

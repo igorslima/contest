@@ -19,17 +19,19 @@ public class ErrorController implements org.springframework.boot.autoconfigure.w
 	@RequestMapping(value = ERROR_PATH)
     public String errorHtml(HttpServletRequest request) {
 		
-		switch (getStatus(request)) {
-			case NOT_FOUND:
-				return "/error/404";
-			case FORBIDDEN:
-				return "/error/403";
-			case INTERNAL_SERVER_ERROR:
-				return "/error/500";
-			default:
-				return "/error/erro";
+		if(getStatus(request) == HttpStatus.NOT_FOUND){
+			return "/error/404";
 		}
+		else if(getStatus(request) == HttpStatus.FORBIDDEN){
+			return "/error/403";
+		}
+		else if(getStatus(request) == HttpStatus.INTERNAL_SERVER_ERROR){
+			return "/error/500";
+		}
+		return "/error/erro";
+		
     }
+	
 	public HttpStatus getStatus(HttpServletRequest request) {
 		Integer statusCode = (Integer) request
 				.getAttribute("javax.servlet.error.status_code");

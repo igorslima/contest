@@ -116,14 +116,12 @@ public class LoginController {
 	
 	@RequestMapping(path="/completar-cadastro", method=RequestMethod.POST)
 	public String completarCadastro(@Valid Pessoa pessoa, @RequestParam String senha, @RequestParam String senhaConfirma){
-		
 		if(senha.equals(senhaConfirma)){
 			String password =  pessoaService.encodePassword(senha);
 			pessoa.setPassword(password);
 			pessoaService.addOrUpdate(pessoa);
 			tokenService.deletar(tokenService.buscarPorUsuario(pessoa));
-			
-		} 		
+		}
 		
 		return Constants.REDIRECIONAR_PARA_LOGIN;
 	}
