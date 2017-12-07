@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 public class CustomPermissionEvaluator implements PermissionEvaluator {
 
+	
 	@Override
 	public boolean hasPermission(Authentication auth, Object targetDomainObject, Object permission) {
 		if ((auth == null) || (targetDomainObject == null) || !(permission instanceof String)) {
@@ -22,9 +23,12 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 		if ((auth == null) || (targetType == null) || !(permission instanceof String)) {
 			return false;
 		}
+	
 		return hasPrivilege(auth, targetType.toUpperCase(), permission.toString().toUpperCase());
 	}
 
+	
+	
 	private boolean hasPrivilege(Authentication auth, String targetType, String permission) {
 		for (GrantedAuthority grantedAuth : auth.getAuthorities()) {
 			if (grantedAuth.getAuthority().startsWith(targetType) && grantedAuth.getAuthority().contains(permission)) {

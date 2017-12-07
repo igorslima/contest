@@ -69,7 +69,6 @@ public class AuthenticationProviderContest implements AuthenticationProvider {
 	private Pessoa generatePessoa(final Usuario usuario, String encondedPassword) {
 		Pessoa pessoa;
 		pessoa = pessoaService.getByEmail(usuario.getEmail());
-
 		if (pessoa != null) {
 			pessoa = ContestUtil.convertUsuarioToPessoa(encondedPassword, usuario, pessoa);
 		}else {

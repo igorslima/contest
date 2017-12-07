@@ -71,7 +71,7 @@ public class CustomMethodSecurityExpressionRoot extends SecurityExpressionRoot i
     	}
     	return false;
     }
-    
+    // VERFICA SE UMA PESSOA É RESPONSÁVEL POR UMA SESSÃO
     public boolean isResponsavelInSecao(Long secaoId){
     	Pessoa pessoa = (Pessoa) this.getPrincipal();
     	
@@ -82,7 +82,7 @@ public class CustomMethodSecurityExpressionRoot extends SecurityExpressionRoot i
     	}
     	return false;
     }
-    
+    // VERIFICA SE UMA PESSOA É COAUTOR EM UM TRABALHO
     public boolean isCoautorInTrabalho(Long trabalhoId){
     	Pessoa pessoa = (Pessoa) this.getPrincipal();
     	for(ParticipacaoTrabalho participacao : pessoa.getParticipacoesTrabalho()){
@@ -92,7 +92,7 @@ public class CustomMethodSecurityExpressionRoot extends SecurityExpressionRoot i
     	}
     	return false;
     }
-    
+    // VERIFICA SE UMA PESSOA É COAUTOR EM UM ARTIGO DO EVENTO
     public boolean isCoautorInEvento(Long eventoId){
     	Pessoa pessoa = (Pessoa) this.getPrincipal();
     	for(ParticipacaoEvento participacao : pessoa.getParticipacoesEvento()){
