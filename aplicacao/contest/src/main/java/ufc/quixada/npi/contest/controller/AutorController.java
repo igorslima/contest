@@ -65,7 +65,6 @@ public class AutorController {
 	private static final String ERRO_CADASTRO_TRABALHO = "ERRO_CADASTRO_TRABALHO";
 	private static final String TRABALHO_ENVIADO = "TRABALHO_ENVIADO";
 	private static final String FORMATO_ARQUIVO_INVALIDO = "FORMATO_ARQUIVO_INVALIDO";
-	private static final String NAO_HA_TRABALHOS = "NAO_HA_TRABALHOS";
 	private static final String NAO_TEM_REVISAO = "NAO_TEM_REVISAO";
 	private static final String TEM_REVISAO = "TEM_REVISAO";
 	private static final String PARTICAPAR_EVENTO_SUCESSO = "PARTICAPAR_EVENTO_SUCESSO";
@@ -341,12 +340,10 @@ public class AutorController {
 		Long idTrabalho = Long.parseLong(trabalhoId);
 		try {
 			if (trabalhoService.existeTrabalho(idTrabalho) && eventoService.existeEvento(idEvento)) {
-
 				Evento evento = eventoService.buscarEventoPorId(Long.parseLong(eventoId));
 				Trabalho trabalho = trabalhoService.getTrabalhoById(idTrabalho);
 				Submissao submissao = new Submissao();
 				submissao.setTrabalho(trabalho);
-
 				if (validarArquivo(file)) {
 					if (evento.isPeriodoInicial() || evento.isPeriodoFinal()) {
 						if (saveFile(file, trabalho)) {
@@ -355,7 +352,6 @@ public class AutorController {
 									messageService.getMessage(TRABALHO_ENVIADO));
 
 							trabalhoService.notificarAutoresEnvioTrabalho(evento, trabalho);
-
 							return "redirect:/autor/meusTrabalhos";
 						}
 					} else {

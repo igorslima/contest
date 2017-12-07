@@ -103,17 +103,6 @@ public class RevisorController {
 		return REVISOR_TRABALHOS_REVISAO;
 	}
 
-	private List<Long> eventosComoRevisor() {
-		Pessoa p = PessoaLogadaUtil.pessoaLogada();
-		List<ParticipacaoEvento> participacoesComoRevisor = participacaoEventoService
-				.getEventosDoRevisor(EstadoEvento.ATIVO, p.getId());
-		List<Long> eventosComoRevisor = new ArrayList<>();
-		for (ParticipacaoEvento participacaoEvento : participacoesComoRevisor) {
-			eventosComoRevisor.add(participacaoEvento.getEvento().getId());
-		}
-		return eventosComoRevisor;
-	}
-
 	//@PreAuthorize("isRevisorInTrabalho(#idTrabalho)")
 	@RequestMapping(value = "/{idTrabalho}/revisar", method = RequestMethod.GET)
 	public String revisarTrabalho(HttpSession session, Model model, @PathVariable("idTrabalho") Long idTrabalho,

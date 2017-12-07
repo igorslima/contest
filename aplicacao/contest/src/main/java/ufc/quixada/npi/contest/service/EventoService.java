@@ -23,7 +23,6 @@ import ufc.quixada.npi.contest.util.ContestUtil;
 @Service
 public class EventoService {
 
-	// GOD CLASS
 	// TODO refatorar método adicionarPessoa
 	// TODO refatorar método adicionarOuAtualizarEvento
 	// TODO Colocar as Strings staticas em outra classe
@@ -70,10 +69,8 @@ public class EventoService {
 		Token token =  new Token();
 		
 		if (pessoa == null) {
-			
 			try {
 				Usuario usuarioLdap = usuarioService.getByEmail(email);
-				
 				if(usuarioLdap != null){
 					pessoa = ContestUtil.convertUsuarioToPessoa("", usuarioLdap, new Pessoa());
 				}else{
