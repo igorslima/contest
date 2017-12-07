@@ -30,8 +30,6 @@ import ufc.quixada.npi.contest.util.PessoaLogadaUtil;
 public class SecaoController {
 	// GOD CLASS
 	
-	// TODO refatorar método secaoTrabalhos
-
 	@Autowired
 	private SecaoService secaoService;
 	@Autowired
