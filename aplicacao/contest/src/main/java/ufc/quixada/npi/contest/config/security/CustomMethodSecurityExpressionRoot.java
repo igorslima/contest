@@ -49,7 +49,6 @@ public class CustomMethodSecurityExpressionRoot extends SecurityExpressionRoot i
     }
     
     //RESTRIÇÕES PARA REVISOR
-    
     public boolean isRevisorInTrabalho(Long trabalhoId){
     	Pessoa pessoa = (Pessoa)getPrincipal();
     	
@@ -102,7 +101,6 @@ public class CustomMethodSecurityExpressionRoot extends SecurityExpressionRoot i
     	}
     	return false;
     }
-
     
     public boolean isOrientadorInTrabalho(Long trabalhoId){
     	Pessoa pessoa = (Pessoa) this.getPrincipal();

@@ -35,6 +35,5 @@ public class ContestApplication extends SpringBootServletInitializer {
 		return (args) -> {
             storageService.deleteAll();
 		};
-	}
-		
+	}		
 }
