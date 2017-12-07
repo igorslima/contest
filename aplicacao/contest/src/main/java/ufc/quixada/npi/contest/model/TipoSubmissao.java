@@ -9,10 +9,11 @@ public enum TipoSubmissao {
 		this.setTipoSubmissao(tipoSubmissao);
 	}
 
+	// retorna o tipo de submissao
 	public String getTipoSubmissao() {
 		return tipoSubmissao;
 	}
-
+	// define o tipo de submissao
 	public void setTipoSubmissao(String tipoSubmissao) {
 		this.tipoSubmissao = tipoSubmissao;
 	}
