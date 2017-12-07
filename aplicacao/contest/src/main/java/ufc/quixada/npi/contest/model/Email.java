@@ -3,6 +3,7 @@ package ufc.quixada.npi.contest.model;
 import java.util.HashMap;
 import java.util.Map;
 
+// Esta classe contém os dados para o envio de um email
 public class Email {
 
 	private String nomeDestinatario;

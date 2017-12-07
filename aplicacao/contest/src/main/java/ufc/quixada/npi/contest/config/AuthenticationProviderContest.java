@@ -31,6 +31,7 @@ public class AuthenticationProviderContest implements AuthenticationProvider {
 	@Autowired
 	private MessageService messageService;
 
+	// Reliza autenticação do usuário
 	@Override
 	@Transactional
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {

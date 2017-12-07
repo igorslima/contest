@@ -204,6 +204,7 @@ public class EventoController extends EventoGenericoController {
 		return "redirect:/evento/inativos";
 	}
 
+	// Adiciona a participação em um evento para uma determinada pessoa
 	public void addEventoEmParticipacao(Evento evento, ParticipacaoEvento participacao, Pessoa pessoa) {
 		evento(evento);
 		participacao.setEvento(evento);

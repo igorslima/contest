@@ -196,6 +196,7 @@ public class EventoControllerOrganizador extends EventoGenericoController {
 		return Constants.TEMPLATE_ATRIBUIR_REVISOR_ORG;
 	}
 
+	// Permite visualizar os trabalhos do evento com suas respectivas revisões
 	@RequestMapping("/evento/{id}/trabalhos")
 	public String verTrabalhosDoEvento(@PathVariable("id") Long idEvento, Model model) {
 		List<String> resultadoRevisoes = resultadoRevisoes(idEvento);
@@ -212,7 +213,8 @@ public class EventoControllerOrganizador extends EventoGenericoController {
 		model.addAttribute("trabalhos", trabalhosDoEvento);
 		return TRABALHOS_DO_EVENTO;
 	}
-
+	
+	// Adiciona as revisões aos trabalhos do evento
 	private List<String> resultadoRevisoes(Long idEvento) {
 		List<Trabalho> trabalhos = trabalhoService.getTrabalhosEvento(eventoService.buscarEventoPorId(idEvento));
 		String resultado = "";
@@ -232,6 +234,7 @@ public class EventoControllerOrganizador extends EventoGenericoController {
 		}
 	}
 
+	// Atribui um revisor para um determinado trabalho
 	@RequestMapping(value = "/evento/trabalho/revisor", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody String atibuirRevisor(@RequestBody RevisaoJsonWrapper dadosRevisao) {
 
@@ -251,7 +254,8 @@ public class EventoControllerOrganizador extends EventoGenericoController {
 
 		return "{\"result\":\"ok\"}";
 	}
-
+	
+	// Remove o revisor de um determinado trabalho
 	@RequestMapping(value = "/evento/trabalho/removerRevisor", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody String removerRevisor(@RequestBody RevisaoJsonWrapper dadosRevisao) {
 		ParticipacaoTrabalho participacao = participacaoTrabalhoService
@@ -259,7 +263,8 @@ public class EventoControllerOrganizador extends EventoGenericoController {
 		participacaoTrabalhoService.remover(participacao);
 		return "{\"result\":\"ok\"}";
 	}
-
+	
+	// Remove organizador de um evento
 	@RequestMapping(value = "/removerOrganizador/{eventoId}", method = RequestMethod.POST)
 	public String removerOrganizador(@RequestParam("pessoaId") Long pessoaId, @PathVariable Long eventoId,
 			RedirectAttributes redirect) {
@@ -278,7 +283,8 @@ public class EventoControllerOrganizador extends EventoGenericoController {
 
 		return "redirect:/eventoOrganizador/evento/" + evento.getId();
 	}
-
+	
+	// Remove participação de uma pessoa como revisor do evento
 	@RequestMapping(value = "/removerRevisor/{eventoId}", method = RequestMethod.POST)
 	public String removerRevisorDoEvento(@RequestParam("pessoaId") Long pessoaId, @PathVariable Long eventoId,
 			RedirectAttributes redirect) {
@@ -290,7 +296,7 @@ public class EventoControllerOrganizador extends EventoGenericoController {
 
 		return "redirect:/eventoOrganizador/evento/" + evento.getId();
 	}
-
+	
 	@PreAuthorize("isOrganizador()")
 	@RequestMapping(value = { "/meusEventos", "" }, method = RequestMethod.GET)
 	public String meusEventos(Model model) {
@@ -335,7 +341,8 @@ public class EventoControllerOrganizador extends EventoGenericoController {
 		if (eventosAtivos.isEmpty())
 			existeEventos = false;
 	}
-
+	
+	// Lista os eventos não ativos ou finalizados
 	@PreAuthorize("isOrganizador()")
 	@RequestMapping(value = "/inativos", method = RequestMethod.GET)
 	public String listarEventosInativos(Model model) {
@@ -380,13 +387,14 @@ public class EventoControllerOrganizador extends EventoGenericoController {
 		return alterarEvento(id, model, redirect, Constants.TEMPLATE_EDITAR_EVENTO_ORG,
 				"redirect:/eventoOrganizador/inativos");
 	}
-
+	
+	// Permite alterar as informações de um evento
 	@RequestMapping(value = "/editar", method = RequestMethod.POST)
 	public String editarEvento(@Valid Evento evento, BindingResult result, Model model, RedirectAttributes redirect) {
 		return ativarOuEditarEvento(evento, result, model, redirect, "redirect:/eventoOrganizador/ativos",
 				Constants.TEMPLATE_EDITAR_EVENTO_ORG);
 	}
-
+	
 	@RequestMapping(value = "/ativar/{id}", method = RequestMethod.GET)
 	public String ativarEvento(@PathVariable Long id, Model model, RedirectAttributes redirect) {
 		try {

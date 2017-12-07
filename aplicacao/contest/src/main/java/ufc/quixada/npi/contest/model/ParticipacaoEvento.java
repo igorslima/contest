@@ -32,38 +32,47 @@ public class ParticipacaoEvento {
 	@ManyToOne(cascade=CascadeType.REFRESH)
 	private Evento evento;
 
+	// Retorna o id
 	public Long getId() {
 		return id;
 	}
-
+	
+	// Altera o id
 	public void setId(Long id) {
 		this.id = id;
 	}
 
+	// Retorna o papel da participacao
 	public Tipo getPapel() {
 		return papel;
 	}
-
+	
+	// Altera o papel da participacao
 	public void setPapel(Tipo papel) {
 		this.papel = papel;
 	}
-
+	
+	// Retorna a pessoa
 	public Pessoa getPessoa() {
 		return pessoa;
 	}
-
+	
+	// Altera a pessoa
 	public void setPessoa(Pessoa pessoa) {
 		this.pessoa = pessoa;
 	}
-
+	
+	// Retorna o evento
 	public Evento getEvento() {
 		return evento;
 	}
-
+	
+	// Altera o evento
 	public void setEvento(Evento evento) {
 		this.evento = evento;
 	}
-
+	
+	// Construtor da participacao
 	public ParticipacaoEvento(Tipo papel, Pessoa pessoa, Evento evento) {
 		this.papel = papel;
 		this.pessoa = pessoa;

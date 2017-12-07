@@ -208,7 +208,8 @@ public class AutorController {
 		model.addAttribute("trabalhosEvento", trabalhosEventos);
 		return Constants.TEMPLATE_MEUS_TRABALHOS_AUTOR;
 	}
-	// pega todos os eventos que o autor está participando
+
+	// Seleciona os eventos que o autor logado está participando e retorna eles 
 	private List<Evento> eventos(Long eventoId) {
 		Pessoa autorLogado = PessoaLogadaUtil.pessoaLogada();
 		List<Evento> eventos = new ArrayList<>();
@@ -332,7 +333,7 @@ public class AutorController {
 			return "redirect:/autor/enviarTrabalhoForm/" + eventoId;
 		}
 	}
-
+	
 	private Trilha trilha(RedirectAttributes redirect, String eventoId, String trilhaId) {
 		Trilha trilha;
 		Long idEvento = Long.parseLong(eventoId);
