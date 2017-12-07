@@ -23,7 +23,6 @@ import ufc.quixada.npi.contest.model.Papel.Tipo;
 @Table(name = "trabalho")
 public class Trabalho implements Comparable<Trabalho> {
 	// GOD CLASS
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
@@ -240,8 +239,7 @@ public class Trabalho implements Comparable<Trabalho> {
 				if(revisao.getConteudo().contains("indicacao"))
 					return true;
 			}
-		}
-		
+		}		
 		return false;
 	}
 	
