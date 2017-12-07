@@ -199,17 +199,23 @@ public class AutorController {
 	// Com esse método o autor pode listar seus trabalhos que foram submetidos para um evento
 	@RequestMapping(value = "/meusTrabalhos/evento/{eventoId}", method = RequestMethod.GET)
 	public String listarMeusTrabalhosEmEventosAtivos(@PathVariable Long eventoId, Model model) {
-		Pessoa autorLogado = PessoaLogadaUtil.pessoaLogada();
-		List<Evento> eventos = new ArrayList<>();
-		if (eventoId != null) {
+		List<Evento> eventos = eventos(eventoId);
+		if (eventoId != null)
 			eventos.add(eventoService.buscarEventoPorId(eventoId));
-		} else {
-			eventos = eventoService.buscarEventosParticapacaoAutor(autorLogado.getId());
-		}
+		
 		List<String> trabalhosEventos = trabalhosEventos(eventos);
 		model.addAttribute("eventos", eventos);
 		model.addAttribute("trabalhosEvento", trabalhosEventos);
 		return Constants.TEMPLATE_MEUS_TRABALHOS_AUTOR;
+	}
+
+	private List<Evento> eventos(Long eventoId) {
+		Pessoa autorLogado = PessoaLogadaUtil.pessoaLogada();
+		List<Evento> eventos = new ArrayList<>();
+		if (eventoId != null) {
+		} else
+			eventos = eventoService.buscarEventosParticapacaoAutor(autorLogado.getId());
+		return eventos;
 	}
 
 	//Método para listar os trabalhos de cada evento
@@ -262,16 +268,12 @@ public class AutorController {
 			@RequestParam(value = "file", required = true) MultipartFile file,
 			@RequestParam("eventoId") String eventoId, @RequestParam(required = false) String trilhaId,
 			RedirectAttributes redirect, HttpServletRequest request) {
-		Evento evento;
-		Trilha trilha;
+		Evento evento = evento(redirect, eventoId);
+		Trilha trilha = trilha(redirect, eventoId, trilhaId);
 		Submissao submissao;
 		try {
 			String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
 					+ request.getContextPath();
-			Long idEvento = Long.parseLong(eventoId);
-			Long idTrilha = Long.parseLong(trilhaId);
-			evento = eventoService.buscarEventoPorId(idEvento);
-			trilha = trilhaService.get(idTrilha, idEvento);
 			if (evento == null || trilha == null) {
 				redirect.addFlashAttribute("erroAoCadastrar", messageService.getMessage(ERRO_CADASTRO_TRABALHO));
 				return "redirect:/autor/meusTrabalhos";
@@ -322,13 +324,28 @@ public class AutorController {
 					}
 				} else {
 					redirect.addFlashAttribute("foraDoPrazoDeSubmissao", messageService.getMessage(FORA_DA_DATA_DE_SUBMISSAO));
-					return "redirect:/autor/enviarTrabalhoForm/" + eventoId;
 				}
 			} else {
 				redirect.addFlashAttribute("erro", messageService.getMessage(FORMATO_ARQUIVO_INVALIDO));
-				return "redirect:/autor/enviarTrabalhoForm/" + eventoId;
+				
 			}
+			return "redirect:/autor/enviarTrabalhoForm/" + eventoId;
 		}
+	}
+
+	private Trilha trilha(RedirectAttributes redirect, String eventoId, String trilhaId) {
+		Trilha trilha;
+		Long idEvento = Long.parseLong(eventoId);
+		Long idTrilha = Long.parseLong(trilhaId);
+		trilha = trilhaService.get(idTrilha, idEvento);
+		return trilha;
+	}
+
+	private Evento evento(RedirectAttributes redirect, String eventoId) {
+		Evento evento;
+		Long idEvento = Long.parseLong(eventoId);
+		evento = eventoService.buscarEventoPorId(idEvento);
+		return evento;
 	}
 
 	//Método para reenviar trabalho
@@ -348,9 +365,7 @@ public class AutorController {
 					if (evento.isPeriodoInicial() || evento.isPeriodoFinal()) {
 						if (saveFile(file, trabalho)) {
 							submissaoService.adicionarOuEditar(submissao);
-							redirect.addFlashAttribute("sucessoEnviarTrabalho",
-									messageService.getMessage(TRABALHO_ENVIADO));
-
+							redirect.addFlashAttribute("sucessoEnviarTrabalho",messageService.getMessage(TRABALHO_ENVIADO));
 							trabalhoService.notificarAutoresEnvioTrabalho(evento, trabalho);
 							return "redirect:/autor/meusTrabalhos";
 						}
@@ -461,12 +476,10 @@ public class AutorController {
 					return "redirect:/autor/listarTrabalhos/" + evento.getId();
 				}
 			}
-			model.addAttribute("erroExcluir", messageService.getMessage(ERRO_EXCLUIR_TRABALHO));
-			return Constants.TEMPLATE_MEUS_TRABALHOS_AUTOR;
-		} catch (NumberFormatException e) {
-			model.addAttribute("erroExcluir", messageService.getMessage(ERRO_EXCLUIR_TRABALHO));
-			return Constants.TEMPLATE_MEUS_TRABALHOS_AUTOR;
-		}
+		} catch (NumberFormatException e) {}
+		model.addAttribute("erroExcluir", messageService.getMessage(ERRO_EXCLUIR_TRABALHO));
+		return Constants.TEMPLATE_MEUS_TRABALHOS_AUTOR;
+
 	}
 	
 	// método para validar um arquivo

@@ -179,31 +179,35 @@ public class RevisorController {
 				return "redirect:/revisor/" + idTrabalho + "/revisar";
 			}
 
-			String conteudo = RevisaoJSON.toJson(formatacao, originalidade, merito, clareza, qualidade, relevancia,
-					auto_avaliacao, comentarios_autores, avaliacao_geral, avaliacao_final, indicar);
-
-			Revisao revisao = new Revisao();
-			revisao.setConteudo(conteudo);
-			revisao.setRevisor(revisor);
-			revisao.setTrabalho(trabalho);
-			revisao.setObservacoes(comentarios_organizacao);
-
-			if(avaliacao_final.equals("APROVADO")) {
-				revisao.setAvaliacao(Avaliacao.APROVADO);
-			}
-			else if(avaliacao_final.equals("RESSALVAS")) {
-				revisao.setAvaliacao(Avaliacao.RESSALVAS);
-			}
-			else if(avaliacao_final.equals("REPROVADO")) {
-				revisao.setAvaliacao(Avaliacao.REPROVADO);
-			}
-
+			Revisao revisao = revisao(formatacao, originalidade, merito, clareza, qualidade, relevancia, auto_avaliacao,
+					comentarios_autores, comentarios_organizacao, avaliacao_geral, avaliacao_final, indicar, trabalho,
+					revisor);
 			revisaoService.addOrUpdate(revisao);
 
 			redirect.addFlashAttribute("trabalhoRevisado", messageService.getMessage(TRABALHO_REVISADO));
 			return "redirect:/revisor/" + idEvento + "/trabalhosRevisao";
 		}
 		return REVISOR_SEM_PERMISSAO;
+	}
+
+	private Revisao revisao(String formatacao, String originalidade, String merito, String clareza, String qualidade,
+			String relevancia, String auto_avaliacao, String comentarios_autores, String comentarios_organizacao,
+			String avaliacao_geral, String avaliacao_final, String indicar, Trabalho trabalho, Pessoa revisor) {
+		String conteudo = RevisaoJSON.toJson(formatacao, originalidade, merito, clareza, qualidade, relevancia,
+				auto_avaliacao, comentarios_autores, avaliacao_geral, avaliacao_final, indicar);
+		Revisao revisao = new Revisao();
+		revisao.setConteudo(conteudo);
+		revisao.setRevisor(revisor);
+		revisao.setTrabalho(trabalho);
+		revisao.setObservacoes(comentarios_organizacao);
+		if (avaliacao_final.equals("APROVADO")) {
+			revisao.setAvaliacao(Avaliacao.APROVADO);
+		} else if (avaliacao_final.equals("RESSALVAS")) {
+			revisao.setAvaliacao(Avaliacao.RESSALVAS);
+		} else if (avaliacao_final.equals("REPROVADO")) {
+			revisao.setAvaliacao(Avaliacao.REPROVADO);
+		}
+		return revisao;
 	}
 
 	@PreAuthorize("isRevisorInTrabalho(#idTrabalho)")
@@ -268,21 +272,30 @@ public class RevisorController {
 	
 	@RequestMapping(value = "/evento/{id}")
 	public String paginaRevisor(@PathVariable Long id, Model model) {
+		List<Evento> eventos = eventos(id);
 		String cpf = SecurityContextHolder.getContext().getAuthentication().getName();
 		Pessoa pessoaAux = pessoaService.getByCpf(cpf);		
-		List<Evento> eventos;
-		
 		if(id != null) {
-			eventos = new ArrayList<Evento>();
 			eventos.add(eventoService.buscarEventoPorId(id));
-		} else {
-			eventos = eventoService.buscarEventosQueReviso(pessoaAux.getId());		
+		} else {		
 		}
 		
 		model.addAttribute("pessoa", pessoaAux);
 		model.addAttribute("eventos", eventos);
 				
 		return "revisor/revisor_meus_eventos";
+	}
+
+	private List<Evento> eventos(Long id) {
+		String cpf = SecurityContextHolder.getContext().getAuthentication().getName();
+		Pessoa pessoaAux = pessoaService.getByCpf(cpf);
+		List<Evento> eventos;
+		if (id != null) {
+			eventos = new ArrayList<Evento>();
+		} else {
+			eventos = eventoService.buscarEventosQueReviso(pessoaAux.getId());
+		}
+		return eventos;
 	}
 
 	@RequestMapping(value = "/")
@@ -293,16 +306,12 @@ public class RevisorController {
 	@RequestMapping(value = "/ativos", method = RequestMethod.GET)
 	public String listarEventosAtivos(Model model) {
 		Pessoa pessoa = PessoaLogadaUtil.pessoaLogada();
+		boolean existeEventos = existeEventos();
 		List<Evento> eventosAtivos = eventoService.buscarEventoPorEstado(EstadoEvento.ATIVO);
 		List<ParticipacaoEvento> participacoesComoRevisor = participacaoEventoService
 				.getEventosDoRevisor(EstadoEvento.ATIVO, pessoa.getId());
 		List<ParticipacaoEvento> participacoesComoOrganizador = participacaoEventoService
 				.getEventosDoOrganizador(EstadoEvento.ATIVO, pessoa.getId());
-		boolean existeEventos = true;
-
-		if (eventosAtivos.isEmpty())
-			existeEventos = false;
-
 		List<Long> eventosComoRevisor = new ArrayList<>();
 		List<Long> eventosComoOrganizador = new ArrayList<>();
 
@@ -320,20 +329,24 @@ public class RevisorController {
 		model.addAttribute("eventosComoRevisor", eventosComoRevisor);
 		return Constants.TEMPLATE_LISTAR_EVENTOS_ATIVOS_REV;
 	}
+
+	private boolean existeEventos() {
+		List<Evento> eventosAtivos = eventoService.buscarEventoPorEstado(EstadoEvento.ATIVO);
+		boolean existeEventos = true;
+		if (eventosAtivos.isEmpty())
+			existeEventos = false;
+		return existeEventos;
+	}
 	
 	@RequestMapping(value = "/evento/{id}/detalhes", method = RequestMethod.GET)
 	public String detalhesEvento(@PathVariable String id, Model model) {
+		Boolean eventoPrivado = eventoPrivado(id);
 		Long eventoId = Long.parseLong(id);
 		Pessoa pessoa = PessoaLogadaUtil.pessoaLogada();
 		List<ParticipacaoEvento> participacoesComoRevisor = participacaoEventoService
 				.getEventosDoRevisor(EstadoEvento.ATIVO, pessoa.getId());
 		List<Long> eventosComoRevisor = new ArrayList<>();
 		Evento evento = eventoService.buscarEventoPorId(eventoId);
-		Boolean eventoPrivado = false;
-
-		if (evento.getVisibilidade() == VisibilidadeEvento.PRIVADO) {
-			eventoPrivado = true;
-		}
 		for (ParticipacaoEvento participacaoEvento : participacoesComoRevisor) {
 			eventosComoRevisor.add(participacaoEvento.getEvento().getId());
 		}
@@ -366,5 +379,15 @@ public class RevisorController {
 		model.addAttribute("eventosComoRevisor", eventosComoRevisor);
 
 		return Constants.TEMPLATE_DETALHES_EVENTO_REV;
+	}
+
+	private Boolean eventoPrivado(String id) throws java.lang.NumberFormatException {
+		Long eventoId = Long.parseLong(id);
+		Evento evento = eventoService.buscarEventoPorId(eventoId);
+		Boolean eventoPrivado = false;
+		if (evento.getVisibilidade() == VisibilidadeEvento.PRIVADO) {
+			eventoPrivado = true;
+		}
+		return eventoPrivado;
 	}
 }
