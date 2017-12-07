@@ -208,7 +208,7 @@ public class AutorController {
 		model.addAttribute("trabalhosEvento", trabalhosEventos);
 		return Constants.TEMPLATE_MEUS_TRABALHOS_AUTOR;
 	}
-
+	// pega todos os eventos que o autor está participando
 	private List<Evento> eventos(Long eventoId) {
 		Pessoa autorLogado = PessoaLogadaUtil.pessoaLogada();
 		List<Evento> eventos = new ArrayList<>();

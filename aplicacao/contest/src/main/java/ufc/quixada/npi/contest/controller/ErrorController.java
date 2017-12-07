@@ -16,6 +16,7 @@ public class ErrorController implements org.springframework.boot.autoconfigure.w
 		return ERROR_PATH;
 	}
 	
+	// retorna o código de erro
 	@RequestMapping(value = ERROR_PATH)
     public String errorHtml(HttpServletRequest request) {
 		
@@ -31,7 +32,7 @@ public class ErrorController implements org.springframework.boot.autoconfigure.w
 		return "/error/erro";
 		
     }
-	
+	// retorna o status do erro
 	public HttpStatus getStatus(HttpServletRequest request) {
 		Integer statusCode = (Integer) request
 				.getAttribute("javax.servlet.error.status_code");
