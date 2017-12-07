@@ -38,7 +38,6 @@ public class AuthenticationProviderContest implements AuthenticationProvider {
 		Pessoa pessoa;
 		String cpf = authentication.getName();
 		String password = authentication.getCredentials().toString();
-	
 		pessoa = pessoaService.getByCpf(cpf);
 
 		if (pessoa != null) { // Pessoa existe na Base Local entra no trecho abaixo
